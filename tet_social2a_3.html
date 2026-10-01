@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="te">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TET 2A Social Quiz 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Noto+Sans:wght@400;600&family=Noto+Sans+Telugu:wght@400;600;700&family=Ramabhadra&display=swap">
+<style>
+/* Layout: a single atlas-sheet column — teacher header, quiz card, question map grid, credit footer */
+:root{
+  --paper:#f4f6f1; --sheet:#ffffff; --ink:#1d3442; --muted:#5b6d72; --line:#d7dfd8;
+  --accent:#b8742a; --accent-soft:#f6ead9; --sea:#2c6e7f; --sea-soft:#e2eff1;
+  --ok:#2f7d4a; --ok-soft:#e3f2e7; --bad:#b23b33; --bad-soft:#f8e3e1;
+  --c1:#f26b00; --c2:#00897b; --c3:#7b3fe4; --c4:#e0245e; --on-hero:#ffffff;
+  --hero:linear-gradient(120deg,#ff8a1f 0%,#e8405f 50%,#8a3ee0 100%);
+  --f-display:"Bitter","Ramabhadra",Georgia,serif;
+  --f-te:"Noto Sans Telugu","Noto Sans",system-ui,sans-serif;
+  --f-body:"Noto Sans","Noto Sans Telugu",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#111a1f; --sheet:#18242b; --ink:#e5ece8; --muted:#9db0b2; --line:#2c3b42;
+  --accent:#e0a35a; --accent-soft:#3a2c1b; --sea:#7fc0cf; --sea-soft:#1c3239;
+  --ok:#6fcf8e; --ok-soft:#173326; --bad:#f08b80; --bad-soft:#3b1e1c; --c1:#ffa04d; --c2:#4fd3c3; --c3:#b590ff; --c4:#ff6f9a; --hero:linear-gradient(120deg,#c25a0c 0%,#a82a4a 50%,#5b2aa3 100%); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#111a1f; --sheet:#18242b; --ink:#e5ece8; --muted:#9db0b2; --line:#2c3b42;
+  --accent:#e0a35a; --accent-soft:#3a2c1b; --sea:#7fc0cf; --sea-soft:#1c3239;
+  --ok:#6fcf8e; --ok-soft:#173326; --bad:#f08b80; --bad-soft:#3b1e1c; --c1:#ffa04d; --c2:#4fd3c3; --c3:#b590ff; --c4:#ff6f9a; --hero:linear-gradient(120deg,#c25a0c 0%,#a82a4a 50%,#5b2aa3 100%); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:18px 28px;display:flex;flex-direction:column;gap:16px}
+header.top{display:flex;align-items:center;gap:16px;background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+header.top img{width:84px;height:88px;object-fit:cover;border-radius:12px;border:3px solid var(--accent);flex:none}
+.ht{min-width:0;display:flex;flex-direction:column;gap:2px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--f-display);font-size:clamp(20px,4.6vw,26px);line-height:1.2;margin:0;text-wrap:balance}
+.sub{font-family:var(--f-te);color:var(--muted);font-size:14px}
+.langs{display:flex;flex-wrap:wrap;gap:8px}
+.langs button{font:600 14px var(--f-te);padding:8px 14px;border-radius:999px;border:1.5px solid var(--sea);background:transparent;color:var(--sea);cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--sea);color:var(--sheet)}
+.status{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.status b{color:var(--ink)}
+.bar{flex:1 1 160px;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:14px}
+.qno{font-family:var(--f-display);color:var(--accent);font-size:15px}
+.qtext{display:flex;flex-direction:column;gap:4px;white-space:pre-line}
+.qtext .en{font-size:17px;font-weight:600}
+.qtext .te{font-family:var(--f-te);font-size:17px;font-weight:600}
+.qtext .en+.te{font-weight:400;color:var(--muted);font-size:16px}
+.mtab{overflow-x:auto}
+.mtab table{border-collapse:collapse;width:100%;font-size:15px}
+.mtab th,.mtab td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.mtab th{background:var(--sea-soft);color:var(--sea);font-weight:600}
+.mtab small{display:block;font-family:var(--f-te);color:var(--muted)}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--sheet);color:var(--ink);font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--sea);background:var(--sea-soft)}
+.opt:focus-visible,.langs button:focus-visible,.nav button:focus-visible,.grid button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt .k{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--sea-soft);color:var(--sea);font-weight:700;font-size:14px}
+.opt .t{min-width:0;display:flex;flex-direction:column}
+.opt .t .te{font-family:var(--f-te)}
+.opt .t .en+.te{color:var(--muted);font-size:15px}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .k{background:var(--ok);color:var(--sheet)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);color:var(--sheet)}
+.exp{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.exp .verdict{font-weight:700}
+.exp .verdict.ok{color:var(--ok)} .exp .verdict.no{color:var(--bad)}
+.exp .te{font-family:var(--f-te)}
+.nav{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.nav button{font:600 15px var(--f-te);padding:10px 18px;border-radius:10px;border:none;background:var(--ink);color:var(--sheet);cursor:pointer}
+.nav button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.nav button:disabled{opacity:.4;cursor:default}
+.mapcard{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.mapcard h2{font-family:var(--f-display);font-size:16px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.grid button{aspect-ratio:1;max-width:100%;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 13px var(--f-body);cursor:pointer;font-variant-numeric:tabular-nums;padding:0}
+.grid button.r{background:var(--ok);color:var(--sheet);border-color:var(--ok)}
+.grid button.w{background:var(--bad);color:var(--sheet);border-color:var(--bad)}
+.grid button.cur{outline:2px solid var(--accent);outline-offset:1px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.result{text-align:center;align-items:center}
+.result .big{font-family:var(--f-display);font-size:44px;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+
+/* ---- colourful layer ---- */
+body{background:
+  radial-gradient(600px 400px at 0% 0%,color-mix(in srgb,var(--c1) 16%,transparent),transparent 70%),
+  radial-gradient(600px 420px at 100% 30%,color-mix(in srgb,var(--c3) 14%,transparent),transparent 70%),
+  radial-gradient(700px 500px at 20% 100%,color-mix(in srgb,var(--c2) 14%,transparent),transparent 70%),
+  var(--paper);background-attachment:fixed}
+header.top{background:var(--hero);border:none;color:var(--on-hero);box-shadow:0 10px 26px -12px color-mix(in srgb,var(--c4) 60%,transparent)}
+header.top img{border:3px solid var(--on-hero);box-shadow:0 0 0 4px color-mix(in srgb,var(--on-hero) 35%,transparent)}
+header.top .eyebrow{color:var(--on-hero);opacity:.9}
+header.top .sub{color:var(--on-hero);opacity:.92}
+.langs button:nth-child(1){--lc:var(--c1)} .langs button:nth-child(2){--lc:var(--c4)} .langs button:nth-child(3){--lc:var(--c2)}
+.langs button{border-color:var(--lc);color:var(--lc);background:color-mix(in srgb,var(--lc) 8%,var(--sheet))}
+.langs button[aria-pressed="true"]{background:var(--lc);color:var(--sheet)}
+.bar{height:10px}
+.bar i{background:linear-gradient(90deg,var(--c1),var(--c4),var(--c3))}
+.status b{color:var(--c3)}
+.card{border:none;border-top:6px solid transparent;background:linear-gradient(var(--sheet),var(--sheet)) padding-box,linear-gradient(90deg,var(--c1),var(--c4),var(--c3),var(--c2)) border-box;box-shadow:0 8px 24px -14px color-mix(in srgb,var(--c3) 50%,transparent)}
+.qno{display:inline-block;align-self:flex-start;background:color-mix(in srgb,var(--c1) 14%,var(--sheet));color:var(--c1);padding:3px 12px;border-radius:999px}
+.opts .opt:nth-child(1){--oc:var(--c1)} .opts .opt:nth-child(2){--oc:var(--c2)} .opts .opt:nth-child(3){--oc:var(--c3)} .opts .opt:nth-child(4){--oc:var(--c4)}
+.opt{border-color:color-mix(in srgb,var(--oc) 35%,var(--line));background:color-mix(in srgb,var(--oc) 5%,var(--sheet))}
+.opt .k{background:var(--oc);color:var(--sheet)}
+.opt:hover:not(:disabled){border-color:var(--oc);background:color-mix(in srgb,var(--oc) 13%,var(--sheet))}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)} .opt.right .k{background:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .k{background:var(--bad)}
+.exp{border-left-color:var(--c3);background:color-mix(in srgb,var(--c3) 10%,var(--sheet))}
+.mtab th{background:color-mix(in srgb,var(--c2) 16%,var(--sheet));color:var(--c2)}
+.nav button{background:linear-gradient(120deg,var(--c4),var(--c3));color:var(--on-hero)}
+.nav button.ghost{background:color-mix(in srgb,var(--c2) 8%,var(--sheet));color:var(--c2);border-color:var(--c2)}
+.mapcard{border:none;box-shadow:0 8px 24px -16px color-mix(in srgb,var(--c2) 60%,transparent)}
+.mapcard h2{color:var(--c2)}
+.grid button:nth-child(4n+1){--gc:var(--c1)} .grid button:nth-child(4n+2){--gc:var(--c2)} .grid button:nth-child(4n+3){--gc:var(--c3)} .grid button:nth-child(4n){--gc:var(--c4)}
+.grid button{border-color:color-mix(in srgb,var(--gc) 45%,var(--line));background:color-mix(in srgb,var(--gc) 9%,var(--sheet));color:var(--gc)}
+.grid button.r{background:var(--ok);border-color:var(--ok);color:var(--sheet)}
+.grid button.w{background:var(--bad);border-color:var(--bad);color:var(--sheet)}
+.grid button.cur{outline:3px solid var(--c4)}
+.result .big{background:linear-gradient(90deg,var(--c1),var(--c4),var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent}
+footer{border-top:none;background:var(--hero);color:var(--on-hero);border-radius:14px;padding:14px 16px}
+footer b{color:var(--on-hero)}
+footer{text-align:center;font-family:var(--f-te);font-size:15px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px}
+footer b{color:var(--ink)}
+footer{color:var(--on-hero);border-top:none;background:var(--hero);border-radius:14px;padding:14px 16px} footer b{color:var(--on-hero)}
+@media (max-width:480px){.grid{grid-template-columns:repeat(8,1fr)} header.top img{width:70px;height:74px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- larger text ---- */
+body{font-size:18px;line-height:1.6}
+.wrap{max-width:820px;gap:18px}
+.eyebrow{font-size:13.5px}
+h1{font-size:clamp(23px,5.4vw,30px)}
+.sub{font-size:16.5px}
+header.top img{width:96px;height:100px}
+.langs button{font-size:16.5px;padding:10px 18px}
+.status{font-size:16.5px}
+.qno{font-size:17px}
+.qtext .en,.qtext .te{font-size:21px;line-height:1.55}
+.qtext .en+.te{font-size:20px}
+.opt{padding:14px 16px;gap:14px;font-size:19px}
+.opt .k{width:36px;height:36px;font-size:17px}
+.opt .t .en+.te{font-size:18px}
+.mtab table{font-size:18px}
+.exp{font-size:18.5px;padding:14px 16px}
+.nav button{font-size:17.5px;padding:12px 22px}
+.mapcard h2{font-size:19px}
+.grid button{font-size:15.5px}
+.legend{font-size:15px}
+footer{font-size:18px!important}
+footer span{font-size:15px!important}
+.result .big{font-size:56px}
+@media (max-width:480px){.qtext .en,.qtext .te{font-size:20px}.opt{font-size:18px}.grid{grid-template-columns:repeat(7,1fr)}header.top img{width:80px;height:84px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <img src="data:image/jpeg;base64,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" alt="ఉపాధ్యాయుడు కొల్లి తాతబాబు">
+    <div class="ht">
+      <span class="eyebrow">AP TET · Paper 2A · Social Studies</span>
+      <h1>Social Practice Quiz · Q 101–150</h1>
+      <span class="sub">సాంఘిక శాస్త్రం అభ్యాస క్విజ్ · ప్రశ్నలు 101–150</span>
+    </div>
+  </header>
+
+  <div class="langs" role="group" aria-label="Language">
+    <button id="l-both" data-l="both" aria-pressed="true">English + తెలుగు</button>
+    <button id="l-te" data-l="te" aria-pressed="false">తెలుగు</button>
+    <button id="l-en" data-l="en" aria-pressed="false">English</button>
+  </div>
+
+  <div class="status">
+    <span id="s-pos"></span>
+    <span class="bar"><i id="s-bar"></i></span>
+    <span id="s-score"></span>
+  </div>
+
+  <section class="card" id="card" aria-live="polite"></section>
+
+  <section class="mapcard">
+    <h2 id="map-h"></h2>
+    <div class="grid" id="grid"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <footer>ఈ యాప్‌ను ఉపాధ్యాయుడు <b>కొల్లి తాతబాబు</b> డిజైన్ చేశారు<br><span style="font-family:var(--f-body);font-size:13px;opacity:.9">Designed by teacher Kolli Tatababu</span></footer>
+</div>
+
+<script>
+const Q=[
+{q:["Alai Darwaza was built by","అలై దర్వాజాను నిర్మించినవారు"],o:[["Alauddin Khilji","అలాఉద్దీన్ ఖిల్జీ"],["Ibrahim Lodi","ఇబ్రహీం లోడీ"],["Iltutmish","ఇల్‌టుట్‌మిష్"],["Balban","బాల్బన్"]],a:0,
+e:["Alauddin Khilji built the Alai Darwaza (1311), the southern gateway of the Qutb complex in Delhi.","అలాఉద్దీన్ ఖిల్జీ 1311లో ఢిల్లీలోని కుతుబ్ సముదాయానికి దక్షిణ ద్వారమైన అలై దర్వాజాను నిర్మించాడు."]},
+{q:["He was the last powerful ruler among the Mughals","మొఘల్ పాలకులలో చివరి శక్తివంతమైన పాలకుడు"],o:[["Humayun","హుమాయూన్"],["Babur","బాబర్"],["Akbar","అక్బర్"],["Aurangzeb","ఔరంగజేబు"]],a:3,
+e:["Aurangzeb (1658–1707) was the last of the great Mughals. After his death the empire weakened quickly.","ఔరంగజేబు (1658–1707) గొప్ప మొఘల్ చక్రవర్తులలో చివరివాడు. అతని మరణం తర్వాత సామ్రాజ్యం వేగంగా బలహీనపడింది."]},
+{q:["In this year the 'English Education Act' was introduced","ఈ సంవత్సరంలో ఆంగ్ల విద్యా చట్టాన్ని ప్రవేశపెట్టారు"],o:[["1835","1835"],["1935","1935"],["1735","1735"],["1635","1635"]],a:0,
+e:["The English Education Act of 1835, under William Bentinck and based on Macaulay's Minute, made English the medium of higher education.","మెకాలే మినిట్ ఆధారంగా విలియం బెంటింక్ కాలంలో 1835 ఆంగ్ల విద్యా చట్టం ఉన్నత విద్యలో ఆంగ్లాన్ని బోధనా మాధ్యమంగా చేసింది."]},
+{q:["The Permanent Settlement Act (1793) was introduced by","శాశ్వత శిస్తు నిర్ణయ చట్టాన్ని (1793) ప్రవేశపెట్టినవారు"],o:[["Cornwallis","కారన్ వాలిస్"],["Warren Hastings","వారెన్ హేస్టింగ్స్"],["Dalhousie","డల్హౌసీ"],["Canning","కానింగ్"]],a:0,
+e:["Lord Cornwallis introduced the Permanent Settlement in Bengal in 1793. Zamindars collected land revenue, and the amount payable to the Company was fixed forever.","లార్డ్ కారన్ వాలిస్ 1793లో బెంగాల్‌లో శాశ్వత శిస్తు నిర్ణయాన్ని ప్రవేశపెట్టాడు. జమీందారులు శిస్తు వసూలు చేసేవారు; కంపెనీకి చెల్లించే మొత్తం శాశ్వతంగా నిర్ణయించబడింది."]},
+{q:["The Champaran Movement happened in this state","చంపారన్ ఉద్యమం ఈ రాష్ట్రంలో జరిగింది"],o:[["Gujarat","గుజరాత్"],["Uttar Pradesh","ఉత్తరప్రదేశ్"],["Kerala","కేరళ"],["Bihar","బీహార్"]],a:3,
+e:["In 1917 Gandhiji led the Champaran Satyagraha in Bihar for indigo farmers. It was his first satyagraha in India.","1917లో గాంధీజీ బీహార్‌లోని చంపారన్‌లో నీలిమందు రైతుల కోసం సత్యాగ్రహం చేశారు. ఇది భారతదేశంలో ఆయన మొదటి సత్యాగ్రహం."]},
+{q:["The 'Mahalwari' system was introduced by","'మహల్వారీ' విధానాన్ని ప్రవేశపెట్టినవారు"],o:[["Alexander Reed","అలెగ్జాండర్ రీడ్"],["Thomas Munro","థామస్ మన్రో"],["Holt Mackenzie","హోల్ట్ మెకంజీ"],["Cornwallis","కారన్ వాలిస్"]],a:2,
+e:["Holt Mackenzie introduced the Mahalwari system (1822) in North-West Provinces; revenue was fixed for a whole village (mahal). Munro and Reed introduced the Ryotwari system.","హోల్ట్ మెకంజీ 1822లో వాయవ్య ప్రావిన్సులలో మహల్వారీ విధానం ప్రవేశపెట్టాడు; శిస్తు మొత్తం గ్రామానికి (మహల్) నిర్ణయించేవారు. మన్రో, రీడ్ రైత్వారీ విధానం ప్రవేశపెట్టారు."]},
+{q:["Cultivation by planters on their own land is called","తోట యజమానులు తమ సొంత భూమిలో సాగు చేయడాన్ని ఇలా అంటారు"],o:[["Nij","నిజ్"],["Ryoti","రైతి"],["Mahal","మహల్"],["Shikhar","శిఖర్"]],a:0,
+e:["In indigo cultivation, 'nij' meant planters growing indigo on land they directly controlled. Under 'ryoti', ryots grew indigo on their own land under contract.","నీలిమందు సాగులో 'నిజ్' అంటే తోట యజమానులు నేరుగా తమ ఆధీనంలోని భూమిలో సాగు చేయడం. 'రైతి' విధానంలో రైతులు ఒప్పందం మేరకు తమ భూముల్లో సాగు చేసేవారు."]},
+{q:["This is associated with Cornwallis","కారన్ వాలిస్‌తో సంబంధం ఉన్నది"],o:[["Doctrine of Lapse","రాజ్య సంక్రమణ సిద్ధాంతం"],["Mahalwari system","మహల్వారీ పద్ధతి"],["Permanent Settlement system","శాశ్వత శిస్తు నిర్ణయ పద్ధతి"],["Ryotwari system","రైత్వారీ పద్ధతి"]],a:2,
+e:["Cornwallis is linked with the Permanent Settlement (1793). The Doctrine of Lapse belongs to Dalhousie.","కారన్ వాలిస్ శాశ్వత శిస్తు నిర్ణయంతో (1793) సంబంధం కలిగి ఉన్నాడు. రాజ్య సంక్రమణ సిద్ధాంతం డల్హౌసీది."]},
+{q:["Tribals follow this type of cultivation","గిరిజనులు ఈ రకమైన వ్యవసాయం చేస్తారు"],o:[["Jhum","ఝుమ్ (పోడు)"],["Intensive","సాంద్ర"],["Commercial","వాణిజ్య"],["Intensive and commercial","సాంద్ర మరియు వాణిజ్య"]],a:0,
+e:["Jhum is shifting (slash-and-burn) cultivation done by tribal people, especially in the North-East. In Andhra it is called 'podu'.","ఝుమ్ అనేది గిరిజనులు చేసే విస్థాపన (నరికి కాల్చే) వ్యవసాయం, ముఖ్యంగా ఈశాన్య భారతంలో. ఆంధ్రలో దీనిని 'పోడు' అంటారు."]},
+{q:["The 'Gaddi' shepherds belong to this state","'గద్దీ' గొర్రెల కాపరులు ఈ రాష్ట్రానికి చెందినవారు"],o:[["Karnataka","కర్ణాటక"],["Himachal Pradesh","హిమాచల్ ప్రదేశ్"],["Maharashtra","మహారాష్ట్ర"],["Andhra Pradesh","ఆంధ్రప్రదేశ్"]],a:1,
+e:["Gaddis are shepherds of Himachal Pradesh who move to the Shivalik hills in winter and to high meadows in summer.","గద్దీలు హిమాచల్ ప్రదేశ్ గొర్రెల కాపరులు. వీరు శీతాకాలంలో శివాలిక్ కొండలకు, వేసవిలో ఎత్తైన పచ్చిక బయళ్ళకు వెళతారు."]},
+{q:["The Munda tribals were living in this region","ముండా గిరిజన తెగ ప్రజలు ఈ ప్రాంతంలో నివసించేవారు"],o:[["Malwa Plateau","మాల్వా పీఠభూమి"],["Chota Nagpur Plateau","ఛోటా నాగ్‌పూర్ పీఠభూమి"],["Deccan Plateau","దక్కన్ పీఠభూమి"],["Nilgiri Hills","నీలగిరి కొండలు"]],a:1,
+e:["The Mundas live in the Chota Nagpur plateau (present Jharkhand).","ముండాలు ఛోటా నాగ్‌పూర్ పీఠభూమిలో (ప్రస్తుత జార్ఖండ్) నివసిస్తారు."]},
+{q:["Shifting cultivation named 'Bewar' is practised in this state","'బేవర్' అనే విస్థాపన వ్యవసాయం ఈ రాష్ట్రంలో చేస్తారు"],o:[["Sikkim","సిక్కిం"],["Odisha","ఒడిశా"],["Gujarat","గుజరాత్"],["Madhya Pradesh","మధ్యప్రదేశ్"]],a:3,
+e:["Shifting cultivation has different local names: 'bewar' or 'dahiya' in Madhya Pradesh, 'podu' in Andhra Pradesh, 'jhum' in the North-East.","విస్థాపన వ్యవసాయానికి ప్రాంతాల వారీగా పేర్లు: మధ్యప్రదేశ్‌లో 'బేవర్' లేదా 'దహియా', ఆంధ్రప్రదేశ్‌లో 'పోడు', ఈశాన్య భారతంలో 'ఝుమ్'."]},
+{q:["'Birsa' belonged to this tribal group","'బిర్సా' ఈ గిరిజన తెగకు చెందినవాడు"],o:[["Santhali","సంథాలీ"],["Munda","ముండా"],["Dogri","డోగ్రీ"],["Maithili","మైథిలీ"]],a:1,
+e:["Birsa Munda led the Munda uprising (Ulgulan) in 1899–1900 in the Chota Nagpur region.","బిర్సా ముండా 1899–1900లో ఛోటా నాగ్‌పూర్ ప్రాంతంలో ముండా తిరుగుబాటుకు (ఉల్గులాన్) నాయకత్వం వహించాడు."]},
+{q:["The 'Munda' tribal group is related to this region of India","'ముండా' తెగ భారతదేశంలోని ఈ ప్రాంతానికి చెందినది"],o:[["Chota Nagpur","ఛోటా నాగ్‌పూర్"],["Malwa","మాల్వా"],["Deccan","దక్కన్"],["Shillong","షిల్లాంగ్"]],a:0,
+e:["The Mundas belong to the Chota Nagpur region of Jharkhand.","ముండాలు జార్ఖండ్‌లోని ఛోటా నాగ్‌పూర్ ప్రాంతానికి చెందినవారు."]},
+{q:["The Khurda uprising (1817) took place in this state","ఖుర్దా తిరుగుబాటు (1817) జరిగిన రాష్ట్రం"],o:[["Bengal","బెంగాల్"],["Central Provinces","సెంట్రల్ ప్రావిన్సెస్"],["Bombay","బొంబాయి"],["Odisha","ఒడిశా"]],a:3,
+e:["The Khurda uprising, also called the Paika rebellion, broke out in Odisha in 1817 against British rule.","పాయిక్ తిరుగుబాటుగా కూడా పిలిచే ఖుర్దా తిరుగుబాటు 1817లో ఒడిశాలో బ్రిటిష్ పాలనకు వ్యతిరేకంగా జరిగింది."]},
+{q:["The last Mughal emperor","చివరి మొఘల్ చక్రవర్తి"],o:[["Sikandar Shah","సికిందర్ షా"],["Bahadur Shah Zafar","బహదూర్ షా జఫర్"],["Shah Alam","షా ఆలం"],["Mir Jafar","మీర్ జాఫర్"]],a:1,
+e:["Bahadur Shah Zafar was the last Mughal emperor. After the 1857 revolt he was exiled to Rangoon, where he died in 1862.","బహదూర్ షా జఫర్ చివరి మొఘల్ చక్రవర్తి. 1857 తిరుగుబాటు తర్వాత అతన్ని రంగూన్‌కు బహిష్కరించారు, అక్కడే 1862లో మరణించాడు."]},
+{q:["The Governor-General of India at the time of the Sepoy Mutiny","సిపాయిల తిరుగుబాటు సమయంలో భారత గవర్నర్ జనరల్"],o:[["William Bentinck","విలియం బెంటింక్"],["Robert Clive","రాబర్ట్ క్లైవ్"],["Lord Canning","లార్డ్ కానింగ్"],["Warren Hastings","వారెన్ హేస్టింగ్స్"]],a:2,
+e:["Lord Canning was Governor-General during the 1857 revolt. In 1858 he became the first Viceroy of India.","1857 తిరుగుబాటు సమయంలో లార్డ్ కానింగ్ గవర్నర్ జనరల్. 1858లో అతను భారతదేశపు మొదటి వైస్రాయ్ అయ్యాడు."]},
+{q:["She took active part in the 1857 uprising from Lucknow","ఈమె లక్నో నుండి 1857 తిరుగుబాటులో చురుకుగా పాల్గొన్నారు"],o:[["Begum Hazrat Mahal","బేగం హజ్రత్ మహల్"],["Lakshmi Bai","లక్ష్మీబాయి"],["Kannamma","కన్నమ్మ"],["Leelavathi","లీలావతి"]],a:0,
+e:["Begum Hazrat Mahal led the revolt in Lucknow (Awadh). Rani Lakshmi Bai led it in Jhansi.","బేగం హజ్రత్ మహల్ లక్నో (అవధ్)లో తిరుగుబాటుకు నాయకత్వం వహించారు. రాణి లక్ష్మీబాయి ఝాన్సీలో నాయకత్వం వహించారు."]},
+{q:["Governor-General Canning decided that he would be the last Mughal king","గవర్నర్ జనరల్ కానింగ్ ఇతనే చివరి మొఘల్ రాజు అని నిర్ణయించాడు"],o:[["Shah Jahan","షాజహాన్"],["Aurangzeb","ఔరంగజేబు"],["Bahadur Shah Zafar","బహదూర్ షా జఫర్"],["Jahangir","జహంగీర్"]],a:2,
+e:["Canning decided that after Bahadur Shah Zafar's death no one would be recognised as Mughal king, so he would be the last.","బహదూర్ షా జఫర్ తర్వాత ఎవరినీ మొఘల్ రాజుగా గుర్తించకూడదని కానింగ్ నిర్ణయించాడు; అందువల్ల అతనే చివరివాడు."]},
+{q:["He represented the sepoy revolt in Kanpur","కాన్పూర్‌లో సిపాయిల తిరుగుబాటుకు ప్రాతినిధ్యం వహించినవారు"],o:[["Rani Avanti Bai","రాణి అవంతీబాయి"],["Nana Saheb","నానా సాహెబ్"],["Bakht Khan","భక్త్ ఖాన్"],["Kunwar Singh","కున్వర్ సింగ్"]],a:1,
+e:["Nana Saheb, adopted son of Peshwa Baji Rao II, led the revolt in Kanpur. Bakht Khan led it in Delhi and Kunwar Singh in Arrah (Bihar).","పీష్వా రెండవ బాజీరావు దత్తపుత్రుడు నానా సాహెబ్ కాన్పూర్‌లో నాయకత్వం వహించాడు. భక్త్ ఖాన్ ఢిల్లీలో, కున్వర్ సింగ్ ఆరా (బీహార్)లో నాయకత్వం వహించారు."]},
+{q:["Founder of the 'Indian National Army'","'భారత జాతీయ సైన్యం' (INA) స్థాపకుడు"],o:[["Bhagat Singh","భగత్ సింగ్"],["Subhash Chandra Bose","సుభాష్ చంద్రబోస్"],["Mahatma Gandhi","మహాత్మా గాంధీ"],["Bal Gangadhar Tilak","బాల గంగాధర తిలక్"]],a:1,
+e:["Subhash Chandra Bose organised and led the INA (Azad Hind Fauj) from 1943 with the call 'Delhi Chalo'. It was first formed by Mohan Singh in 1942.","సుభాష్ చంద్రబోస్ 1943 నుండి 'ఢిల్లీ చలో' నినాదంతో INA (ఆజాద్ హింద్ ఫౌజ్)ను నడిపించారు. దీనిని మొదట 1942లో మోహన్ సింగ్ ఏర్పాటు చేశారు."]},
+{q:["The slogan 'Do or Die' was given by","'సాధించు లేదా మరణించు' అనే నినాదం ఇచ్చినవారు"],o:[["Mahatma Gandhi","మహాత్మా గాంధీ"],["Bal Gangadhar Tilak","బాల గంగాధర తిలక్"],["Gopal Krishna Gokhale","గోపాలకృష్ణ గోఖలే"],["Bhagat Singh","భగత్ సింగ్"]],a:0,
+e:["Gandhiji gave the call 'Do or Die' at the start of the Quit India Movement in August 1942.","1942 ఆగస్టులో క్విట్ ఇండియా ఉద్యమం ప్రారంభంలో గాంధీజీ 'సాధించు లేదా మరణించు' అని పిలుపునిచ్చారు."]},
+{q:["This dynasty ruled France","ఫ్రాన్స్‌ను పాలించిన రాజవంశం"],o:[["Bourbon","బూర్బన్"],["Hohenzollern","హోహెన్‌జోలర్న్"],["Romanov","రోమనోవ్"],["Tudor","ట్యూడర్"]],a:0,
+e:["The Bourbons ruled France (Louis XVI at the time of the French Revolution). Hohenzollerns ruled Prussia/Germany, Romanovs Russia, Tudors England.","బూర్బన్ వంశం ఫ్రాన్స్‌ను పాలించింది (ఫ్రెంచ్ విప్లవ సమయంలో పదహారవ లూయీ). హోహెన్‌జోలర్న్‌లు ప్రష్యా/జర్మనీని, రోమనోవ్‌లు రష్యాను, ట్యూడర్‌లు ఇంగ్లాండ్‌ను పాలించారు."]},
+{q:["In this year the 'Rowlatt Act' was passed","ఈ సంవత్సరంలో రౌలట్ చట్టం ఆమోదించబడింది"],o:[["1919","1919"],["1910","1910"],["1911","1911"],["1905","1905"]],a:0,
+e:["The Rowlatt Act (1919) allowed arrest and detention without trial. Protests against it led to the Jallianwala Bagh massacre (13 April 1919).","రౌలట్ చట్టం (1919) విచారణ లేకుండా అరెస్టు, నిర్బంధానికి అనుమతించింది. దీనికి వ్యతిరేక నిరసనలు జలియన్‌వాలాబాగ్ దురంతానికి (1919 ఏప్రిల్ 13) దారితీశాయి."]},
+{q:["This freedom fighter arrived in India from South Africa in 1915","1915లో దక్షిణాఫ్రికా నుండి భారతదేశానికి వచ్చిన స్వాతంత్ర్య సమరయోధుడు"],o:[["Tilak","తిలక్"],["Patel","పటేల్"],["Nehru","నెహ్రూ"],["Gandhi","గాంధీ"]],a:3,
+e:["Gandhiji returned to India from South Africa on 9 January 1915. This day is now observed as Pravasi Bharatiya Divas.","గాంధీజీ 1915 జనవరి 9న దక్షిణాఫ్రికా నుండి భారతదేశానికి తిరిగి వచ్చారు. ఈ రోజును ఇప్పుడు ప్రవాసీ భారతీయ దివస్‌గా జరుపుకుంటారు."]},
+{q:["Identify the mismatched pair","సరికాని జతను గుర్తించండి"],o:[["1905 – Vandemataram Movement","1905 – వందేమాతరం ఉద్యమం"],["1919 – Rowlatt Act","1919 – రౌలట్ చట్టం"],["1920 – Quit India Movement","1920 – క్విట్ ఇండియా ఉద్యమం"],["1935 – Government of India Act","1935 – భారత ప్రభుత్వ చట్టం"]],a:2,
+e:["The Quit India Movement began in 1942. The movement of 1920 was the Non-Cooperation Movement.","క్విట్ ఇండియా ఉద్యమం 1942లో ప్రారంభమైంది. 1920లో జరిగింది సహాయ నిరాకరణ ఉద్యమం."]},
+{q:["The king of Russia during the Russian Revolution","రష్యా విప్లవ కాలంలో రష్యా రాజు"],o:[["Tsar Nicholas II","జార్ రెండవ నికోలస్"],["Tsar Nicholas III","జార్ మూడవ నికోలస్"],["Tsar Nicholas IV","జార్ నాల్గవ నికోలస్"],["Tsar Nicholas I","జార్ మొదటి నికోలస్"]],a:0,
+e:["Tsar Nicholas II, the last Romanov ruler, gave up the throne in March 1917. There was no Nicholas III or IV.","చివరి రోమనోవ్ పాలకుడు జార్ రెండవ నికోలస్ 1917 మార్చిలో సింహాసనం వదులుకున్నాడు. మూడవ, నాల్గవ నికోలస్ అనేవారు లేరు."]},
+{q:["The book 'The Spirit of Laws' was written by","'ది స్పిరిట్ ఆఫ్ లాస్' గ్రంథాన్ని రచించినవారు"],o:[["Rousseau","రూసో"],["John Locke","జాన్ లాక్"],["Mirabeau","మిరాబు"],["Montesquieu","మాంటెస్క్యూ"]],a:3,
+e:["Montesquieu wrote 'The Spirit of Laws' (1748), proposing separation of powers among the legislature, executive and judiciary. Rousseau wrote 'The Social Contract'.","మాంటెస్క్యూ 'ది స్పిరిట్ ఆఫ్ లాస్' (1748) రాశాడు. శాసన, కార్యనిర్వాహక, న్యాయ శాఖల మధ్య అధికార విభజనను ప్రతిపాదించాడు. రూసో 'సోషల్ కాంట్రాక్ట్' రాశాడు."]},
+{q:["Name of the Russian Parliament","రష్యా పార్లమెంటు పేరు"],o:[["Diet","డైట్"],["Reichstag","రైక్‌స్టాగ్"],["Bundestag","బుండెస్టాగ్"],["Duma","డ్యూమా"]],a:3,
+e:["The Russian parliament is the Duma. The Diet is Japan's, and Reichstag/Bundestag are German parliaments.","రష్యా పార్లమెంటు డ్యూమా. డైట్ జపాన్‌ది; రైక్‌స్టాగ్/బుండెస్టాగ్ జర్మనీ పార్లమెంటులు."]},
+{q:["'Dhangar' pastoralists live in this state","'ధంగర్' పశుపోషకులు ఈ రాష్ట్రంలో నివసిస్తారు"],o:[["Bihar","బీహార్"],["Maharashtra","మహారాష్ట్ర"],["Odisha","ఒడిశా"],["Tamil Nadu","తమిళనాడు"]],a:1,
+e:["Dhangars are a pastoral community of Maharashtra who move between the central plateau and the Konkan with their flocks.","ధంగర్‌లు మహారాష్ట్రకు చెందిన పశుపోషక సమూహం. వీరు తమ మందలతో మధ్య పీఠభూమి, కొంకణ్ మధ్య సంచరిస్తారు."]},
+{q:["Unit of currency in France","ఫ్రాన్స్‌లో ద్రవ్య కొలమానం"],o:[["Mark","మార్క్"],["Tithe","టైద్"],["Taille","టైల్"],["Livre","లివర్"]],a:3,
+e:["The livre was the currency of France until 1794. Tithe was a tax paid to the Church and taille was a direct tax paid to the state.","1794 వరకు ఫ్రాన్స్ ద్రవ్యం లివర్. టైద్ చర్చికి చెల్లించే పన్ను; టైల్ ప్రభుత్వానికి చెల్లించే ప్రత్యక్ష పన్ను."]},
+{q:["The Vienna peace settlement was held in this year","ఈ సంవత్సరంలో వియన్నా శాంతి ఒడంబడిక జరిగింది"],o:[["1814","1814"],["1816","1816"],["1815","1815"],["1819","1819"]],a:2,
+e:["After Napoleon's defeat, European powers met at the Congress of Vienna and signed the Treaty of Vienna in 1815, hosted by Austrian chancellor Metternich.","నెపోలియన్ ఓటమి తర్వాత ఆస్ట్రియా ఛాన్సలర్ మెటర్నిక్ ఆధ్వర్యంలో యూరప్ దేశాలు వియన్నాలో సమావేశమై 1815లో వియన్నా ఒప్పందం చేసుకున్నాయి."]},
+{q:["The 'Corn Laws' came into existence in this country","'మొక్కజొన్న చట్టాలు' (కార్న్ లాస్) ఈ దేశంలో అమల్లోకి వచ్చాయి"],o:[["Britain","బ్రిటన్"],["America","అమెరికా"],["Germany","జర్మనీ"],["Spain","స్పెయిన్"]],a:0,
+e:["Britain's Corn Laws restricted the import of grain to protect landlords. They were abolished in 1846.","బ్రిటన్ భూస్వాములను కాపాడేందుకు కార్న్ లాస్ ధాన్యం దిగుమతిని నియంత్రించాయి. వీటిని 1846లో రద్దు చేశారు."]},
+{q:["Transvaal gold fields are located in","ట్రాన్స్‌వాల్ బంగారు గనులు ఇక్కడ ఉన్నాయి"],o:[["South Africa","దక్షిణాఫ్రికా"],["Italy","ఇటలీ"],["Japan","జపాన్"],["France","ఫ్రాన్స్"]],a:0,
+e:["Gold was found in the Transvaal (Witwatersrand, near Johannesburg) in South Africa in 1886.","1886లో దక్షిణాఫ్రికాలోని ట్రాన్స్‌వాల్ (జోహన్నెస్‌బర్గ్ సమీపంలోని విట్‌వాటర్స్‌రాండ్)లో బంగారం కనుగొనబడింది."]},
+{q:["The period of the First World War","మొదటి ప్రపంచ యుద్ధ కాలం"],o:[["1914–1918","1914–1918"],["1918–1924","1918–1924"],["1939–1945","1939–1945"],["1935–1939","1935–1939"]],a:0,
+e:["The First World War was fought from 1914 to 1918. The Second World War was from 1939 to 1945.","మొదటి ప్రపంచ యుద్ధం 1914 నుండి 1918 వరకు జరిగింది. రెండవ ప్రపంచ యుద్ధం 1939 నుండి 1945 వరకు."]},
+{q:["The Silk Route connected these regions","సిల్క్ మార్గం (పట్టు మార్గం) ఈ ప్రాంతాలను కలిపింది"],o:[["North America – Europe","ఉత్తర అమెరికా – యూరప్"],["Europe – South America","యూరప్ – దక్షిణ అమెరికా"],["Asia – Australia","ఆసియా – ఆస్ట్రేలియా"],["Asia – Europe","ఆసియా – యూరప్"]],a:3,
+e:["The Silk Route was a network of land and sea routes linking China and Asia with Europe and North Africa. Chinese silk was the main trade item.","సిల్క్ మార్గం చైనా, ఆసియాలను యూరప్, ఉత్తర ఆఫ్రికాలతో కలిపిన భూ, సముద్ర మార్గాల సమూహం. చైనా పట్టు ప్రధాన వ్యాపార వస్తువు."]},
+{q:["The First World War (1914–18) was mainly fought in this continent","మొదటి ప్రపంచ యుద్ధం (1914–18) ప్రధానంగా ఈ ఖండంలో జరిగింది"],o:[["Europe","యూరప్"],["Africa","ఆఫ్రికా"],["South America","దక్షిణ అమెరికా"],["Asia","ఆసియా"]],a:0,
+e:["The First World War was fought mainly in Europe, between the Allies (Britain, France, Russia) and the Central Powers (Germany, Austria-Hungary, Ottoman Turkey).","మొదటి ప్రపంచ యుద్ధం ప్రధానంగా యూరప్‌లో మిత్రరాజ్యాలు (బ్రిటన్, ఫ్రాన్స్, రష్యా), కేంద్ర రాజ్యాలు (జర్మనీ, ఆస్ట్రియా-హంగరీ, ఒట్టోమన్ టర్కీ) మధ్య జరిగింది."]},
+{q:["The Great Depression occurred in this year","మహా ఆర్థిక మాంద్యం ఈ సంవత్సరంలో సంభవించింది"],o:[["1815","1815"],["1929","1929"],["1942","1942"],["1930","1930"]],a:1,
+e:["The Great Depression began in 1929 with the Wall Street (US) stock market crash and lasted until the mid-1930s.","మహా మాంద్యం 1929లో అమెరికాలో వాల్ స్ట్రీట్ స్టాక్ మార్కెట్ పతనంతో మొదలై 1930ల మధ్య వరకు కొనసాగింది."]},
+{q:["This is called the first symbol of the new era","కొత్త శకానికి మొదటి చిహ్నంగా పిలువబడేది"],o:[["Steam engine","ఆవిరి యంత్రం"],["Spinning jenny","నూలు వడికే యంత్రం (స్పిన్నింగ్ జెన్నీ)"],["Cotton","పత్తి"],["Jute","జనుము"]],a:2,
+e:["In the Industrial Revolution, cotton was the leading industry. Historians call cotton the first symbol of the new era.","పారిశ్రామిక విప్లవంలో పత్తి పరిశ్రమ అగ్రగామి. చరిత్రకారులు పత్తిని కొత్త శకపు మొదటి చిహ్నంగా పేర్కొన్నారు."]},
+{q:["Marco Polo belonged to this country","మార్కోపోలో ఈ దేశానికి చెందినవాడు"],o:[["Italy","ఇటలీ"],["China","చైనా"],["Africa","ఆఫ్రికా"],["India","ఇండియా"]],a:0,
+e:["Marco Polo was a traveller from Venice, Italy. He travelled to China in the 13th century and visited South India, including the Kakatiya kingdom.","మార్కోపోలో ఇటలీలోని వెనిస్‌కు చెందిన యాత్రికుడు. 13వ శతాబ్దంలో చైనాకు ప్రయాణించి, కాకతీయ రాజ్యంతో సహా దక్షిణ భారతదేశాన్ని సందర్శించాడు."]},
+{q:["The first Indian jute mill was established in 1917 at","1917లో మొట్టమొదటి భారతీయ జనపనార మిల్లును ఇక్కడ స్థాపించారు"],o:[["Calcutta","కలకత్తా"],["Madras","మద్రాసు"],["Meerut","మీరట్"],["Delhi","ఢిల్లీ"]],a:0,
+e:["The first Indian-owned jute mill was set up in Calcutta in 1917 by Seth Hukumchand. Jute mills are concentrated along the Hooghly in West Bengal.","మొదటి భారతీయ యాజమాన్య జనపనార మిల్లును 1917లో సేఠ్ హుకుంచంద్ కలకత్తాలో స్థాపించారు. జనపనార మిల్లులు పశ్చిమ బెంగాల్‌లోని హుగ్లీ నది వెంట కేంద్రీకృతమయ్యాయి."]},
+{q:["Raja Ravi Varma was a","రాజా రవివర్మ ఒక"],o:[["Scientist","శాస్త్రవేత్త"],["Painter","చిత్రకారుడు"],["Economist","ఆర్థికవేత్త"],["Politician","రాజకీయ నాయకుడు"]],a:1,
+e:["Raja Ravi Varma of Kerala was a famous painter known for pictures of scenes from the epics. His prints were mass-produced.","కేరళకు చెందిన రాజా రవివర్మ ఇతిహాస దృశ్యాల చిత్రాలకు ప్రసిద్ధి చెందిన చిత్రకారుడు. ఆయన చిత్రాల ప్రతులు పెద్ద సంఖ్యలో ముద్రించబడ్డాయి."]},
+{q:["The Bengal Gazette, edited by James Augustus Hickey, was a","జేమ్స్ అగస్టస్ హికీ సంపాదకత్వంలో వెలువడిన బెంగాల్ గెజిట్ ఒక"],o:[["Fortnightly magazine","పక్ష పత్రిక"],["Weekly magazine","వార పత్రిక"],["Monthly magazine","మాస పత్రిక"],["Daily magazine","దిన పత్రిక"]],a:1,
+e:["Hickey started the Bengal Gazette in 1780 as a weekly. It was the first newspaper in India.","హికీ 1780లో బెంగాల్ గెజిట్‌ను వార పత్రికగా ప్రారంభించాడు. ఇది భారతదేశంలో మొదటి వార్తాపత్రిక."]},
+{q:["The Industrial Revolution started first in this country","పారిశ్రామిక విప్లవం మొదట ఈ దేశంలో ప్రారంభమైంది"],o:[["Britain","బ్రిటన్"],["America","అమెరికా"],["Japan","జపాన్"],["Russia","రష్యా"]],a:0,
+e:["The Industrial Revolution began in Britain in the late 18th century, helped by coal, iron, capital and colonial markets.","బొగ్గు, ఇనుము, పెట్టుబడి, వలస మార్కెట్ల సహాయంతో 18వ శతాబ్దం చివరలో బ్రిటన్‌లో పారిశ్రామిక విప్లవం ప్రారంభమైంది."]},
+{q:["The first Indian female doctor","భారతదేశపు మొదటి మహిళా వైద్యురాలు"],o:[["Sarojini Naidu","సరోజినీ నాయుడు"],["Kadambini Ganguly","కాదంబినీ గంగూలీ"],["Anandi Bai Joshi","ఆనందీబాయి జోషి"],["Savitribai Phule","సావిత్రిబాయి ఫూలే"]],a:2,
+e:["As per the answer key, Anandi Bai Joshi. She earned a medical degree in the USA in 1886. Kadambini Ganguly qualified in the same year and practised in India, so some books name her.","జవాబు కీ ప్రకారం ఆనందీబాయి జోషి. ఆమె 1886లో అమెరికాలో వైద్య పట్టా పొందారు. కాదంబినీ గంగూలీ కూడా అదే సంవత్సరం అర్హత సాధించి భారత్‌లో వైద్యం చేశారు, కాబట్టి కొన్ని పుస్తకాలు ఆమె పేరు చెబుతాయి."]},
+{q:["Dr. Nelson Mandela was also famous as","డా. నెల్సన్ మండేలా ఈ విధంగా కూడా ప్రఖ్యాతి పొందారు"],o:[["Soldier of South Africa","దక్షిణాఫ్రికా సైనికుడు"],["Dictator of South Africa","దక్షిణాఫ్రికా నియంత"],["Frontier moon of South Africa","దక్షిణాఫ్రికా సరిహద్దు చంద్రుడు"],["Gandhi of South Africa","దక్షిణాఫ్రికా గాంధీ"]],a:3,
+e:["Mandela fought apartheid and became South Africa's first Black president (1994). For his struggle he is called the 'Gandhi of South Africa'; he received the Bharat Ratna in 1990.","మండేలా వర్ణవివక్షపై పోరాడి 1994లో దక్షిణాఫ్రికా మొదటి నల్లజాతి అధ్యక్షుడయ్యారు. ఆయనను 'దక్షిణాఫ్రికా గాంధీ' అంటారు; 1990లో భారతరత్న పొందారు."]},
+{q:["The book 'Wings of Fire' was written by","'వింగ్స్ ఆఫ్ ఫైర్' పుస్తకాన్ని రచించినవారు"],o:[["Mahatma Gandhi","మహాత్మా గాంధీ"],["Jawaharlal Nehru","జవహర్‌లాల్ నెహ్రూ"],["A.P.J. Abdul Kalam","ఏ.పి.జె. అబ్దుల్ కలాం"],["P.V. Narasimha Rao","పి.వి. నరసింహారావు"]],a:2,
+e:["'Wings of Fire' (1999) is the autobiography of Dr A.P.J. Abdul Kalam, the 'Missile Man' and 11th President of India.","'వింగ్స్ ఆఫ్ ఫైర్' (1999) 'మిస్సైల్ మ్యాన్', భారత 11వ రాష్ట్రపతి డా. ఏ.పి.జె. అబ్దుల్ కలాం ఆత్మకథ."]},
+{q:["She is regarded as the first female teacher in India","భారతదేశపు మొదటి మహిళా ఉపాధ్యాయురాలిగా పరిగణించబడేవారు"],o:[["Savitribai Phule","సావిత్రిబాయి ఫూలే"],["Anandi Bai Joshi","ఆనందీబాయి జోషి"],["Sindhutai","సింధుతాయి"],["Kadambini Ganguly","కాదంబినీ గంగూలీ"]],a:0,
+e:["Savitribai Phule, with Jyotirao Phule, started a school for girls in Pune in 1848 and taught there.","సావిత్రిబాయి ఫూలే, జ్యోతిరావు ఫూలేతో కలిసి 1848లో పుణేలో బాలికల పాఠశాల ప్రారంభించి అక్కడ బోధించారు."]},
+{q:["This is not a cause for inequalities","అసమానతలకు కారణం కానిది"],o:[["Traditions","సాంప్రదాయాలు"],["Education","విద్య"],["Wealth","సంపద"],["Power","అధికారం"]],a:1,
+e:["Education is a tool that reduces inequality. Traditions, unequal wealth and power create inequalities.","విద్య అసమానతలను తగ్గించే సాధనం. సాంప్రదాయాలు, అసమాన సంపద, అధికారం అసమానతలను సృష్టిస్తాయి."]},
+{q:["Savitribai Phule belonged to this state","సావిత్రిబాయి ఫూలే ఈ రాష్ట్రానికి చెందినవారు"],o:[["Gujarat","గుజరాత్"],["Punjab","పంజాబ్"],["Maharashtra","మహారాష్ట్ర"],["Karnataka","కర్ణాటక"]],a:2,
+e:["Savitribai Phule was born in Naigaon, Satara district, Maharashtra (1831) and worked in Pune.","సావిత్రిబాయి ఫూలే మహారాష్ట్ర సతారా జిల్లాలోని నైగావ్‌లో (1831) జన్మించి పుణేలో సేవ చేశారు."]}
+];
+const BASE=100;
+
+const UI={
+ en:{q:"Question",of:"of",score:"Score",prev:"◀ Previous",next:"Next ▶",finish:"See result",right:"Correct!",wrong:"Wrong. Correct answer:",map:"Question map",lr:"Correct",lw:"Wrong",lu:"Not answered",done:"Quiz complete",again:"Start again",att:"Answered"},
+ te:{q:"ప్రశ్న",of:"/",score:"స్కోరు",prev:"◀ వెనుకకు",next:"తర్వాత ▶",finish:"ఫలితం చూడండి",right:"సరైన సమాధానం!",wrong:"తప్పు. సరైన సమాధానం:",map:"ప్రశ్నల పటం",lr:"సరైనవి",lw:"తప్పులు",lu:"జవాబు ఇవ్వనివి",done:"క్విజ్ పూర్తయింది",again:"మళ్ళీ ప్రారంభించండి",att:"జవాబిచ్చినవి"}
+};
+let lang="both",cur=0,ans=Array(Q.length).fill(null),showResult=false;
+try{const s=JSON.parse(localStorage.getItem("tet2a-soc3")||"null");if(s){lang=s.lang||lang;cur=s.cur||0;if(Array.isArray(s.ans)&&s.ans.length===Q.length)ans=s.ans;}}catch(e){}
+const save=()=>{try{localStorage.setItem("tet2a-soc3",JSON.stringify({lang,cur,ans}))}catch(e){}};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function bi(p){ // p=[en,te]
+  if(lang==="en")return `<span class="en">${esc(p[0])}</span>`;
+  if(lang==="te")return `<span class="te">${esc(p[1])}</span>`;
+  return p[0]===p[1]?`<span class="en">${esc(p[0])}</span>`:`<span class="en">${esc(p[0])}</span><span class="te">${esc(p[1])}</span>`;
+}
+function lbl(k){ if(lang==="en")return UI.en[k]; if(lang==="te")return UI.te[k]; return UI.te[k]+" / "+UI.en[k]; }
+const K=["A","B","C","D"];
+function render(){
+  document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===lang));
+  const done=ans.filter(x=>x!==null).length, right=ans.filter((x,i)=>x===Q[i].a).length;
+  document.getElementById("s-pos").innerHTML=`${lbl("att")}: <b>${done}/${Q.length}</b>`;
+  document.getElementById("s-score").innerHTML=`${lbl("score")}: <b>${right}</b>`;
+  document.getElementById("s-bar").style.width=(done/Q.length*100)+"%";
+  const card=document.getElementById("card");
+  if(showResult){
+    const wrong=done-right;
+    card.className="card result";
+    card.innerHTML=`<div class="qno">${lbl("done")}</div><div class="big">${right} / ${Q.length}</div>
+      <div>${lbl("lr")}: <b>${right}</b> · ${lbl("lw")}: <b>${wrong}</b> · ${lbl("lu")}: <b>${Q.length-done}</b></div>
+      <div class="nav" style="justify-content:center"><button id="again">${lbl("again")}</button></div>`;
+    document.getElementById("again").onclick=()=>{ans=Array(Q.length).fill(null);cur=0;showResult=false;save();render();};
+  } else {
+    card.className="card";
+    const q=Q[cur],picked=ans[cur];
+    let h=`<div class="qno">${lbl("q")} ${BASE+cur+1} / ${BASE+Q.length}</div><div class="qtext">${bi(q.q)}</div>`;
+    if(q.m){
+      const mh=q.mh||[["Colour","రంగు"],["Feature","స్వరూపం"]];const hd=k=>lang==="en"?mh[k][0]:lang==="te"?mh[k][1]:mh[k][0]+" / "+mh[k][1];
+      const cell=p=>lang==="en"?esc(p[0]):lang==="te"?`<span style="font-family:var(--f-te)">${esc(p[1])}</span>`:`${esc(p[0])}<small>${esc(p[1])}</small>`;
+      h+=`<div class="mtab"><table><thead><tr><th>${hd(0)}</th><th>${hd(1)}</th></tr></thead><tbody>`+
+         q.m.map(r=>`<tr><td>${cell(r[0])}</td><td>${cell(r[1])}</td></tr>`).join("")+`</tbody></table></div>`;
+    }
+    h+=`<div class="opts">`+q.o.map((o,i)=>{
+      let c="";if(picked!==null){if(i===q.a)c="right";else if(i===picked)c="wrong";}
+      return `<button class="opt ${c}" id="opt${i}" data-i="${i}" ${picked!==null?"disabled":""}><span class="k">${K[i]}</span><span class="t">${bi(o)}</span></button>`;
+    }).join("")+`</div>`;
+    if(picked!==null){
+      const ok=picked===q.a;
+      const v=ok?`<span class="verdict ok">✔ ${lbl("right")}</span>`:`<span class="verdict no">✘ ${lbl("wrong")} ${K[q.a]}</span>`;
+      h+=`<div class="exp">${v}${bi(q.e)}</div>`;
+    }
+    const last=cur===Q.length-1;
+    h+=`<div class="nav"><button class="ghost" id="prev" ${cur===0?"disabled":""}>${lbl("prev")}</button><button id="next">${last?lbl("finish"):lbl("next")}</button></div>`;
+    card.innerHTML=h;
+    card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ans[cur]=+b.dataset.i;save();render();});
+    document.getElementById("prev").onclick=()=>{cur--;save();render();};
+    document.getElementById("next").onclick=()=>{if(last){showResult=true;}else cur++;save();render();window.scrollTo({top:0,behavior:"smooth"});};
+  }
+  document.getElementById("map-h").textContent=lbl("map");
+  document.getElementById("legend").innerHTML=`<span style="--c:var(--ok)">${lbl("lr")}</span><span style="--c:var(--bad)">${lbl("lw")}</span><span style="--c:var(--line)">${lbl("lu")}</span>`;
+  const g=document.getElementById("grid");
+  g.innerHTML=Q.map((q,i)=>{let c=ans[i]===null?"":ans[i]===q.a?"r":"w";if(i===cur&&!showResult)c+=" cur";return `<button class="${c}" data-i="${i}" aria-label="Q ${BASE+i+1}">${BASE+i+1}</button>`}).join("");
+  g.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;showResult=false;save();render();document.getElementById("card").scrollIntoView({behavior:"smooth",block:"start"});});
+}
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>{lang=b.dataset.l;save();render();});
+render();
+</script>
+
+</body>
+</html>

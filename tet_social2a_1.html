@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="te">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TET 2A Social Quiz 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Noto+Sans:wght@400;600&family=Noto+Sans+Telugu:wght@400;600;700&family=Ramabhadra&display=swap">
+<style>
+/* Layout: a single atlas-sheet column — teacher header, quiz card, question map grid, credit footer */
+:root{
+  --paper:#f4f6f1; --sheet:#ffffff; --ink:#1d3442; --muted:#5b6d72; --line:#d7dfd8;
+  --accent:#b8742a; --accent-soft:#f6ead9; --sea:#2c6e7f; --sea-soft:#e2eff1;
+  --ok:#2f7d4a; --ok-soft:#e3f2e7; --bad:#b23b33; --bad-soft:#f8e3e1;
+  --c1:#f26b00; --c2:#00897b; --c3:#7b3fe4; --c4:#e0245e; --on-hero:#ffffff;
+  --hero:linear-gradient(120deg,#ff8a1f 0%,#e8405f 50%,#8a3ee0 100%);
+  --f-display:"Bitter","Ramabhadra",Georgia,serif;
+  --f-te:"Noto Sans Telugu","Noto Sans",system-ui,sans-serif;
+  --f-body:"Noto Sans","Noto Sans Telugu",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#111a1f; --sheet:#18242b; --ink:#e5ece8; --muted:#9db0b2; --line:#2c3b42;
+  --accent:#e0a35a; --accent-soft:#3a2c1b; --sea:#7fc0cf; --sea-soft:#1c3239;
+  --ok:#6fcf8e; --ok-soft:#173326; --bad:#f08b80; --bad-soft:#3b1e1c; --c1:#ffa04d; --c2:#4fd3c3; --c3:#b590ff; --c4:#ff6f9a; --hero:linear-gradient(120deg,#c25a0c 0%,#a82a4a 50%,#5b2aa3 100%); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#111a1f; --sheet:#18242b; --ink:#e5ece8; --muted:#9db0b2; --line:#2c3b42;
+  --accent:#e0a35a; --accent-soft:#3a2c1b; --sea:#7fc0cf; --sea-soft:#1c3239;
+  --ok:#6fcf8e; --ok-soft:#173326; --bad:#f08b80; --bad-soft:#3b1e1c; --c1:#ffa04d; --c2:#4fd3c3; --c3:#b590ff; --c4:#ff6f9a; --hero:linear-gradient(120deg,#c25a0c 0%,#a82a4a 50%,#5b2aa3 100%); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:18px 28px;display:flex;flex-direction:column;gap:16px}
+header.top{display:flex;align-items:center;gap:16px;background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+header.top img{width:84px;height:88px;object-fit:cover;border-radius:12px;border:3px solid var(--accent);flex:none}
+.ht{min-width:0;display:flex;flex-direction:column;gap:2px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:var(--f-display);font-size:clamp(20px,4.6vw,26px);line-height:1.2;margin:0;text-wrap:balance}
+.sub{font-family:var(--f-te);color:var(--muted);font-size:14px}
+.langs{display:flex;flex-wrap:wrap;gap:8px}
+.langs button{font:600 14px var(--f-te);padding:8px 14px;border-radius:999px;border:1.5px solid var(--sea);background:transparent;color:var(--sea);cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--sea);color:var(--sheet)}
+.status{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.status b{color:var(--ink)}
+.bar{flex:1 1 160px;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:14px}
+.qno{font-family:var(--f-display);color:var(--accent);font-size:15px}
+.qtext{display:flex;flex-direction:column;gap:4px;white-space:pre-line}
+.qtext .en{font-size:17px;font-weight:600}
+.qtext .te{font-family:var(--f-te);font-size:17px;font-weight:600}
+.qtext .en+.te{font-weight:400;color:var(--muted);font-size:16px}
+.mtab{overflow-x:auto}
+.mtab table{border-collapse:collapse;width:100%;font-size:15px}
+.mtab th,.mtab td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.mtab th{background:var(--sea-soft);color:var(--sea);font-weight:600}
+.mtab small{display:block;font-family:var(--f-te);color:var(--muted)}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--sheet);color:var(--ink);font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--sea);background:var(--sea-soft)}
+.opt:focus-visible,.langs button:focus-visible,.nav button:focus-visible,.grid button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt .k{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--sea-soft);color:var(--sea);font-weight:700;font-size:14px}
+.opt .t{min-width:0;display:flex;flex-direction:column}
+.opt .t .te{font-family:var(--f-te)}
+.opt .t .en+.te{color:var(--muted);font-size:15px}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .k{background:var(--ok);color:var(--sheet)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);color:var(--sheet)}
+.exp{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.exp .verdict{font-weight:700}
+.exp .verdict.ok{color:var(--ok)} .exp .verdict.no{color:var(--bad)}
+.exp .te{font-family:var(--f-te)}
+.nav{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.nav button{font:600 15px var(--f-te);padding:10px 18px;border-radius:10px;border:none;background:var(--ink);color:var(--sheet);cursor:pointer}
+.nav button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.nav button:disabled{opacity:.4;cursor:default}
+.mapcard{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.mapcard h2{font-family:var(--f-display);font-size:16px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.grid button{aspect-ratio:1;max-width:100%;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 13px var(--f-body);cursor:pointer;font-variant-numeric:tabular-nums;padding:0}
+.grid button.r{background:var(--ok);color:var(--sheet);border-color:var(--ok)}
+.grid button.w{background:var(--bad);color:var(--sheet);border-color:var(--bad)}
+.grid button.cur{outline:2px solid var(--accent);outline-offset:1px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.result{text-align:center;align-items:center}
+.result .big{font-family:var(--f-display);font-size:44px;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+
+/* ---- colourful layer ---- */
+body{background:
+  radial-gradient(600px 400px at 0% 0%,color-mix(in srgb,var(--c1) 16%,transparent),transparent 70%),
+  radial-gradient(600px 420px at 100% 30%,color-mix(in srgb,var(--c3) 14%,transparent),transparent 70%),
+  radial-gradient(700px 500px at 20% 100%,color-mix(in srgb,var(--c2) 14%,transparent),transparent 70%),
+  var(--paper);background-attachment:fixed}
+header.top{background:var(--hero);border:none;color:var(--on-hero);box-shadow:0 10px 26px -12px color-mix(in srgb,var(--c4) 60%,transparent)}
+header.top img{border:3px solid var(--on-hero);box-shadow:0 0 0 4px color-mix(in srgb,var(--on-hero) 35%,transparent)}
+header.top .eyebrow{color:var(--on-hero);opacity:.9}
+header.top .sub{color:var(--on-hero);opacity:.92}
+.langs button:nth-child(1){--lc:var(--c1)} .langs button:nth-child(2){--lc:var(--c4)} .langs button:nth-child(3){--lc:var(--c2)}
+.langs button{border-color:var(--lc);color:var(--lc);background:color-mix(in srgb,var(--lc) 8%,var(--sheet))}
+.langs button[aria-pressed="true"]{background:var(--lc);color:var(--sheet)}
+.bar{height:10px}
+.bar i{background:linear-gradient(90deg,var(--c1),var(--c4),var(--c3))}
+.status b{color:var(--c3)}
+.card{border:none;border-top:6px solid transparent;background:linear-gradient(var(--sheet),var(--sheet)) padding-box,linear-gradient(90deg,var(--c1),var(--c4),var(--c3),var(--c2)) border-box;box-shadow:0 8px 24px -14px color-mix(in srgb,var(--c3) 50%,transparent)}
+.qno{display:inline-block;align-self:flex-start;background:color-mix(in srgb,var(--c1) 14%,var(--sheet));color:var(--c1);padding:3px 12px;border-radius:999px}
+.opts .opt:nth-child(1){--oc:var(--c1)} .opts .opt:nth-child(2){--oc:var(--c2)} .opts .opt:nth-child(3){--oc:var(--c3)} .opts .opt:nth-child(4){--oc:var(--c4)}
+.opt{border-color:color-mix(in srgb,var(--oc) 35%,var(--line));background:color-mix(in srgb,var(--oc) 5%,var(--sheet))}
+.opt .k{background:var(--oc);color:var(--sheet)}
+.opt:hover:not(:disabled){border-color:var(--oc);background:color-mix(in srgb,var(--oc) 13%,var(--sheet))}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)} .opt.right .k{background:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .k{background:var(--bad)}
+.exp{border-left-color:var(--c3);background:color-mix(in srgb,var(--c3) 10%,var(--sheet))}
+.mtab th{background:color-mix(in srgb,var(--c2) 16%,var(--sheet));color:var(--c2)}
+.nav button{background:linear-gradient(120deg,var(--c4),var(--c3));color:var(--on-hero)}
+.nav button.ghost{background:color-mix(in srgb,var(--c2) 8%,var(--sheet));color:var(--c2);border-color:var(--c2)}
+.mapcard{border:none;box-shadow:0 8px 24px -16px color-mix(in srgb,var(--c2) 60%,transparent)}
+.mapcard h2{color:var(--c2)}
+.grid button:nth-child(4n+1){--gc:var(--c1)} .grid button:nth-child(4n+2){--gc:var(--c2)} .grid button:nth-child(4n+3){--gc:var(--c3)} .grid button:nth-child(4n){--gc:var(--c4)}
+.grid button{border-color:color-mix(in srgb,var(--gc) 45%,var(--line));background:color-mix(in srgb,var(--gc) 9%,var(--sheet));color:var(--gc)}
+.grid button.r{background:var(--ok);border-color:var(--ok);color:var(--sheet)}
+.grid button.w{background:var(--bad);border-color:var(--bad);color:var(--sheet)}
+.grid button.cur{outline:3px solid var(--c4)}
+.result .big{background:linear-gradient(90deg,var(--c1),var(--c4),var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent}
+footer{border-top:none;background:var(--hero);color:var(--on-hero);border-radius:14px;padding:14px 16px}
+footer b{color:var(--on-hero)}
+footer{text-align:center;font-family:var(--f-te);font-size:15px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px}
+footer b{color:var(--ink)}
+footer{color:var(--on-hero);border-top:none;background:var(--hero);border-radius:14px;padding:14px 16px} footer b{color:var(--on-hero)}
+@media (max-width:480px){.grid{grid-template-columns:repeat(8,1fr)} header.top img{width:70px;height:74px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- larger text ---- */
+body{font-size:18px;line-height:1.6}
+.wrap{max-width:820px;gap:18px}
+.eyebrow{font-size:13.5px}
+h1{font-size:clamp(23px,5.4vw,30px)}
+.sub{font-size:16.5px}
+header.top img{width:96px;height:100px}
+.langs button{font-size:16.5px;padding:10px 18px}
+.status{font-size:16.5px}
+.qno{font-size:17px}
+.qtext .en,.qtext .te{font-size:21px;line-height:1.55}
+.qtext .en+.te{font-size:20px}
+.opt{padding:14px 16px;gap:14px;font-size:19px}
+.opt .k{width:36px;height:36px;font-size:17px}
+.opt .t .en+.te{font-size:18px}
+.mtab table{font-size:18px}
+.exp{font-size:18.5px;padding:14px 16px}
+.nav button{font-size:17.5px;padding:12px 22px}
+.mapcard h2{font-size:19px}
+.grid button{font-size:15.5px}
+.legend{font-size:15px}
+footer{font-size:18px!important}
+footer span{font-size:15px!important}
+.result .big{font-size:56px}
+@media (max-width:480px){.qtext .en,.qtext .te{font-size:20px}.opt{font-size:18px}.grid{grid-template-columns:repeat(7,1fr)}header.top img{width:80px;height:84px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <img src="data:image/jpeg;base64,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" alt="ఉపాధ్యాయుడు కొల్లి తాతబాబు">
+    <div class="ht">
+      <span class="eyebrow">AP TET · Paper 2A · Social Studies</span>
+      <h1>Social Practice Quiz · Q 1–50</h1>
+      <span class="sub">సాంఘిక శాస్త్రం అభ్యాస క్విజ్ · ప్రశ్నలు 1–50</span>
+    </div>
+  </header>
+
+  <div class="langs" role="group" aria-label="Language">
+    <button id="l-both" data-l="both" aria-pressed="true">English + తెలుగు</button>
+    <button id="l-te" data-l="te" aria-pressed="false">తెలుగు</button>
+    <button id="l-en" data-l="en" aria-pressed="false">English</button>
+  </div>
+
+  <div class="status">
+    <span id="s-pos"></span>
+    <span class="bar"><i id="s-bar"></i></span>
+    <span id="s-score"></span>
+  </div>
+
+  <section class="card" id="card" aria-live="polite"></section>
+
+  <section class="mapcard">
+    <h2 id="map-h"></h2>
+    <div class="grid" id="grid"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <footer>ఈ యాప్‌ను ఉపాధ్యాయుడు <b>కొల్లి తాతబాబు</b> డిజైన్ చేశారు<br><span style="font-family:var(--f-body);font-size:13px;opacity:.9">Designed by teacher Kolli Tatababu</span></footer>
+</div>
+
+<script>
+const Q=[
+{q:["Smallest planet in the solar system","సౌర కుటుంబంలో అతి చిన్న గ్రహం"],o:[["Earth","భూమి"],["Mars","అంగారకుడు"],["Mercury","బుధుడు"],["Saturn","శని"]],a:2,
+e:["Mercury is the smallest planet (diameter about 4,879 km) and the one closest to the Sun.","బుధుడు సౌర కుటుంబంలో అతి చిన్న గ్రహం (వ్యాసం సుమారు 4,879 కి.మీ.). ఇది సూర్యునికి అతి దగ్గరగా ఉండే గ్రహం కూడా."]},
+{q:["This is not an inner planet","ఇది అంతర గ్రహం కాదు"],o:[["Mercury","బుధుడు"],["Venus","శుక్రుడు"],["Saturn","శని"],["Earth","భూమి"]],a:2,
+e:["The inner (rocky) planets are Mercury, Venus, Earth and Mars. Saturn is an outer planet (gas giant) beyond the asteroid belt.","అంతర గ్రహాలు: బుధుడు, శుక్రుడు, భూమి, అంగారకుడు. శని గ్రహశకలాల పట్టీకి అవతల ఉండే బాహ్య గ్రహం (వాయు గ్రహం)."]},
+{q:["He was the first man to step on the surface of the Moon","చంద్రుని ఉపరితలంపై అడుగు పెట్టిన మొదటి వ్యక్తి"],o:[["Rakesh Sharma","రాకేష్ శర్మ"],["Neil Armstrong","నీల్ ఆర్మ్‌స్ట్రాంగ్"],["Yuri Gagarin","యూరి గగారిన్"],["Kalpana Chawla","కల్పనా చావ్లా"]],a:1,
+e:["Neil Armstrong landed on the Moon with Apollo 11 in July 1969. Yuri Gagarin was the first man in space (1961); Rakesh Sharma was the first Indian in space (1984).","1969 జూలైలో అపోలో-11 ద్వారా నీల్ ఆర్మ్‌స్ట్రాంగ్ చంద్రునిపై అడుగుపెట్టాడు. యూరి గగారిన్ అంతరిక్షంలోకి వెళ్ళిన మొదటి వ్యక్తి (1961); రాకేష్ శర్మ అంతరిక్షంలోకి వెళ్ళిన మొదటి భారతీయుడు (1984)."]},
+{q:["This planet does not have satellites","ఉపగ్రహాలు లేని గ్రహం"],o:[["Venus","శుక్రుడు"],["Earth","భూమి"],["Saturn","శని"],["Uranus","యురేనస్"]],a:0,
+e:["Mercury and Venus have no natural satellites. Earth has one (the Moon); Saturn and Uranus have many.","బుధుడు, శుక్రుడు గ్రహాలకు సహజ ఉపగ్రహాలు లేవు. భూమికి ఒకటి (చంద్రుడు); శని, యురేనస్‌లకు చాలా ఉపగ్రహాలు ఉన్నాయి."]},
+{q:["This planet is considered as Earth's twin","'భూమికి కవల గ్రహం'గా పరిగణించబడేది"],o:[["Jupiter","బృహస్పతి"],["Mars","అంగారకుడు"],["Venus","శుక్రుడు"],["Saturn","శని"]],a:2,
+e:["Venus is almost the same size and mass as Earth, so it is called Earth's twin.","శుక్రుడు పరిమాణం, ద్రవ్యరాశిలో భూమికి దాదాపు సమానంగా ఉంటుంది. అందుకే దీనిని భూమికి కవల గ్రహం అంటారు."]},
+{q:["Heliocentric theory was proposed by","సూర్యకేంద్రక సిద్ధాంతాన్ని ప్రతిపాదించినది"],o:[["Georges Lemaître","జార్జెస్ లెమైటర్"],["Ptolemy","టాలెమీ"],["Immanuel Kant","ఇమ్మాన్యుయేల్ కాంట్"],["Nicolaus Copernicus","నికోలస్ కోపర్నికస్"]],a:3,
+e:["Copernicus (1543) said the Sun is at the centre and the planets revolve around it. Ptolemy gave the Earth-centred (geocentric) theory; Lemaître proposed the Big Bang idea.","కోపర్నికస్ (1543) సూర్యుడు కేంద్రంలో ఉండి గ్రహాలు దాని చుట్టూ తిరుగుతాయని చెప్పాడు. టాలెమీ భూకేంద్రక సిద్ధాంతం ఇచ్చాడు; లెమైటర్ మహావిస్ఫోట (బిగ్ బ్యాంగ్) భావనను ప్రతిపాదించాడు."]},
+{q:["The world's first seamless celestial globe was built by","ప్రపంచంలో మొట్టమొదటి అతుకులు లేని ఖగోళ గోళాన్ని రూపొందించినవారు"],o:[["Guptas","గుప్తులు"],["Chalukyas","చాళుక్యులు"],["Mauryas","మౌర్యులు"],["Mughals","మొఘలులు"]],a:3,
+e:["It was made in Kashmir in Akbar's time (1589) by Ali Kashmiri ibn Luqman, cast as a single piece of metal with no joints.","అక్బర్ కాలంలో (1589) కాశ్మీర్‌లో అలీ కాశ్మీరీ ఇబ్న్ లుక్మాన్ దీనిని ఒకే లోహపు ముక్కగా, అతుకులు లేకుండా తయారుచేశాడు."]},
+{q:["Identify the 0° latitude","0° అక్షాంశాన్ని గుర్తించండి"],o:[["Tropic of Cancer","కర్కట రేఖ"],["Arctic Circle","ఆర్కిటిక్ వలయం"],["Tropic of Capricorn","మకర రేఖ"],["Equator","భూమధ్య రేఖ"]],a:3,
+e:["The Equator is the 0° latitude. It divides the Earth into the Northern and Southern Hemispheres.","భూమధ్య రేఖ 0° అక్షాంశం. ఇది భూమిని ఉత్తర, దక్షిణ అర్ధగోళాలుగా విభజిస్తుంది."]},
+{q:["The 23½° Northern latitude is called","23½° ఉత్తర అక్షాంశాన్ని ఇలా పిలుస్తారు"],o:[["Tropic of Cancer","కర్కట రేఖ"],["Equator","భూమధ్య రేఖ"],["Tropic of Capricorn","మకర రేఖ"],["Antarctic Circle","అంటార్కిటిక్ వలయం"]],a:0,
+e:["23½° N is the Tropic of Cancer; 23½° S is the Tropic of Capricorn. The Tropic of Cancer passes through the middle of India.","23½° ఉ. కర్కట రేఖ; 23½° ద. మకర రేఖ. కర్కట రేఖ భారతదేశం మధ్య గుండా వెళుతుంది."]},
+{q:["The word \"Globe\" came from the ____ word \"globus\"","\"గ్లోబ్\" అనే పదం \"గ్లోబస్\" అనే ____ పదం నుండి వచ్చింది"],o:[["Greek","గ్రీకు"],["Latin","లాటిన్"],["Spanish","స్పానిష్"],["French","ఫ్రెంచ్"]],a:1,
+e:["'Globus' is a Latin word meaning a round mass or sphere.","'గ్లోబస్' లాటిన్ పదం. దీని అర్థం గుండ్రని ముద్ద లేదా గోళం."]},
+{q:["The imaginary line running horizontally through the middle of the globe is","గ్లోబు మధ్యలో అడ్డంగా గీసిన ఊహారేఖ"],o:[["South Pole","దక్షిణ ధ్రువం"],["Equator","భూమధ్య రేఖ"],["North Pole","ఉత్తర ధ్రువం"],["International Date Line","అంతర్జాతీయ దినరేఖ"]],a:1,
+e:["The Equator runs east–west around the middle of the globe, at equal distance from both poles.","భూమధ్య రేఖ రెండు ధ్రువాలకూ సమాన దూరంలో, గ్లోబు మధ్యలో తూర్పు–పడమరగా ఉంటుంది."]},
+{q:["The imaginary circular lines parallel to the Equator are","భూమధ్య రేఖకు సమాంతరంగా ఉన్న ఊహా వృత్తాకార రేఖలు"],o:[["International Date Line","అంతర్జాతీయ దినరేఖ"],["Longitudes","రేఖాంశాలు"],["Latitudes","అక్షాంశాలు"],["Greenwich","గ్రీనిచ్"]],a:2,
+e:["Latitudes (parallels) run parallel to the Equator. Longitudes (meridians) run from pole to pole.","అక్షాంశాలు భూమధ్య రేఖకు సమాంతరంగా ఉంటాయి. రేఖాంశాలు ఒక ధ్రువం నుండి మరొక ధ్రువం వరకు ఉంటాయి."]},
+{q:["Sun's rays fall directly on the Tropic of Cancer on","సూర్యకిరణాలు కర్కట రేఖపై నిట్టనిలువుగా పడే రోజు"],o:[["21st March","మార్చి 21"],["21st June","జూన్ 21"],["22nd December","డిసెంబర్ 22"],["23rd September","సెప్టెంబర్ 23"]],a:1,
+e:["On 21 June (summer solstice) the Sun is overhead at the Tropic of Cancer. On 22 December it is over the Tropic of Capricorn; on 21 March and 23 September it is over the Equator.","జూన్ 21న (వేసవి అయనాంతం) సూర్యుడు కర్కట రేఖపై నిట్టనిలువుగా ఉంటాడు. డిసెంబర్ 22న మకర రేఖపై; మార్చి 21, సెప్టెంబర్ 23 తేదీల్లో భూమధ్య రేఖపై ఉంటాడు."]},
+{q:["World Earth Day","ప్రపంచ ధరిత్రీ దినోత్సవం"],o:[["April 22","ఏప్రిల్ 22"],["September 16","సెప్టెంబర్ 16"],["March 22","మార్చి 22"],["June 5","జూన్ 5"]],a:0,
+e:["Earth Day is on 22 April (since 1970). September 16 is Ozone Day, March 22 is World Water Day and June 5 is World Environment Day.","ధరిత్రీ దినోత్సవం ఏప్రిల్ 22 (1970 నుండి). సెప్టెంబర్ 16 ఓజోన్ దినోత్సవం, మార్చి 22 ప్రపంచ జల దినోత్సవం, జూన్ 5 ప్రపంచ పర్యావరణ దినోత్సవం."]},
+{q:["World Environment Day","ప్రపంచ పర్యావరణ దినోత్సవం"],o:[["April 22","ఏప్రిల్ 22"],["September 16","సెప్టెంబర్ 16"],["March 22","మార్చి 22"],["June 5","జూన్ 5"]],a:3,
+e:["World Environment Day is observed on 5 June, a date set by the United Nations after the 1972 Stockholm Conference.","1972 స్టాక్‌హోమ్ సదస్సు తర్వాత ఐక్యరాజ్యసమితి జూన్ 5ను ప్రపంచ పర్యావరణ దినోత్సవంగా ప్రకటించింది."]},
+{q:["The fixed and regular path along which the Earth revolves around the Sun is called","భూమి సూర్యుని చుట్టూ తిరిగే నిర్ణీత మార్గాన్ని ఇలా అంటారు"],o:[["Axis","అక్షం"],["Equinox","విషువత్తు"],["Orbit","కక్ష్య"],["Compass","దిక్సూచి"]],a:2,
+e:["The path of revolution is the orbit. The axis is the imaginary line on which the Earth rotates.","భూమి పరిభ్రమించే మార్గం కక్ష్య. భూమి తన చుట్టూ తాను తిరిగే ఊహారేఖ అక్షం."]},
+{q:["It indicates the Arctic Circle","ఆర్కిటిక్ వలయాన్ని సూచించేది"],o:[["0°","0°"],["23½° N","23½° ఉ."],["23½° S","23½° ద."],["66½° N","66½° ఉ."]],a:3,
+e:["The Arctic Circle is at 66½° N and the Antarctic Circle at 66½° S. 23½° N/S are the Tropics.","ఆర్కిటిక్ వలయం 66½° ఉ., అంటార్కిటిక్ వలయం 66½° ద. అక్షాంశాల వద్ద ఉంటాయి. 23½° ఉ./ద. కర్కట, మకర రేఖలు."]},
+{q:["Day and night are caused due to this movement of the Earth","భూమి యొక్క ఈ చలనం వల్ల రాత్రి, పగలు ఏర్పడతాయి"],o:[["Gravitation","గురుత్వాకర్షణ"],["Rotation","భూభ్రమణం"],["Revolution","భూపరిభ్రమణం"],["Orbit","కక్ష్య"]],a:1,
+e:["Rotation (Earth spinning on its axis in about 24 hours) causes day and night. Revolution around the Sun causes seasons.","భూభ్రమణం (సుమారు 24 గంటల్లో భూమి తన అక్షంపై తిరగడం) వల్ల రాత్రి, పగలు ఏర్పడతాయి. సూర్యుని చుట్టూ పరిభ్రమణం వల్ల రుతువులు ఏర్పడతాయి."]},
+{q:["Identify the mismatched pair of capital and state","సరికాని రాజధాని – రాష్ట్రం జతను గుర్తించండి"],o:[["Jaipur – Rajasthan","జైపూర్ – రాజస్థాన్"],["Chennai – Tamil Nadu","చెన్నై – తమిళనాడు"],["Bhopal – Madhya Pradesh","భోపాల్ – మధ్యప్రదేశ్"],["Thiruvananthapuram – Karnataka","తిరువనంతపురం – కర్ణాటక"]],a:3,
+e:["Thiruvananthapuram is the capital of Kerala. The capital of Karnataka is Bengaluru.","తిరువనంతపురం కేరళ రాజధాని. కర్ణాటక రాజధాని బెంగళూరు."]},
+{q:["Match the map colours with the features","పటంలోని రంగులను భౌగోళిక స్వరూపాలతో జతపరచండి"],
+m:[[["i. Dark green","i. ముదురు ఆకుపచ్చ"],["a) Plateaus","a) పీఠభూములు"]],[["ii. Yellow","ii. పసుపు"],["b) Seas and Oceans","b) సముద్రాలు, మహాసముద్రాలు"]],[["iii. Dark blue","iii. ముదురు నీలం"],["c) Forest","c) అడవులు"]]],
+o:[["i-a, ii-b, iii-c","i-a, ii-b, iii-c"],["i-c, ii-a, iii-b","i-c, ii-a, iii-b"],["i-c, ii-b, iii-a","i-c, ii-b, iii-a"],["i-b, ii-c, iii-a","i-b, ii-c, iii-a"]],a:1,
+e:["On maps, dark green shows forests, yellow shows plateaus and dark blue shows seas and oceans.","పటాలలో ముదురు ఆకుపచ్చ అడవులను, పసుపు పీఠభూములను, ముదురు నీలం సముద్రాలు, మహాసముద్రాలను సూచిస్తాయి."]},
+{q:["Find the correct sentence from the following","కింది వాటిలో సరైన వాక్యాన్ని కనుగొనండి"],o:[["River Ganga originates in the Himalayas","గంగా నది హిమాలయాలలో జన్మిస్తుంది"],["River Cauvery flows in West Bengal","కావేరి నది పశ్చిమ బెంగాల్‌లో ప్రవహిస్తుంది"],["River Krishna drains into the Arabian Sea","కృష్ణా నది అరేబియా సముద్రంలో కలుస్తుంది"],["River Penna flows in Maharashtra","పెన్నా నది మహారాష్ట్రలో ప్రవహిస్తుంది"]],a:0,
+e:["The Ganga rises from the Gangotri glacier in the Himalayas. The Cauvery flows through Karnataka and Tamil Nadu; the Krishna and Penna flow into the Bay of Bengal, and the Penna flows through Karnataka and Andhra Pradesh.","గంగా నది హిమాలయాల్లోని గంగోత్రి హిమానీనదంలో జన్మిస్తుంది. కావేరి కర్ణాటక, తమిళనాడులలో ప్రవహిస్తుంది; కృష్ణా, పెన్నా బంగాళాఖాతంలో కలుస్తాయి. పెన్నా కర్ణాటక, ఆంధ్రప్రదేశ్‌లలో ప్రవహిస్తుంది."]},
+{q:["This country does not share a land boundary with India","భారతదేశంతో భూ సరిహద్దును పంచుకోని దేశం"],o:[["Pakistan","పాకిస్తాన్"],["Nepal","నేపాల్"],["Myanmar","మయన్మార్"],["Malaysia","మలేషియా"]],a:3,
+e:["India's land neighbours are Pakistan, Afghanistan, China, Nepal, Bhutan, Bangladesh and Myanmar. Malaysia is in Southeast Asia with no land border with India.","భారత్‌కు భూ సరిహద్దు ఉన్న దేశాలు: పాకిస్తాన్, అఫ్గానిస్తాన్, చైనా, నేపాల్, భూటాన్, బంగ్లాదేశ్, మయన్మార్. మలేషియాతో భూ సరిహద్దు లేదు."]},
+{q:["These maps show the physical features","భౌగోళిక స్వరూపాలను చూపే పటాలు"],o:[["Political maps","రాజకీయ పటాలు"],["Physical maps","భౌతిక పటాలు"],["Thematic maps","విషయ నిర్దేశిత పటాలు"],["Historical maps","చారిత్రక పటాలు"]],a:1,
+e:["Physical maps show natural features such as mountains, plateaus, plains, rivers and oceans.","భౌతిక పటాలు పర్వతాలు, పీఠభూములు, మైదానాలు, నదులు, సముద్రాలు వంటి సహజ స్వరూపాలను చూపుతాయి."]},
+{q:["These maps show historical events","చారిత్రక సంఘటనలను తెలుసుకోవడానికి ఉపయోగించే పటాలు"],o:[["Historical maps","చారిత్రక పటాలు"],["Political maps","రాజకీయ పటాలు"],["Physical maps","భౌతిక పటాలు"],["Thematic maps","విషయ నిర్దేశిత పటాలు"]],a:0,
+e:["Historical maps show past empires, battles, trade routes and other events of history.","చారిత్రక పటాలు గత సామ్రాజ్యాలు, యుద్ధాలు, వాణిజ్య మార్గాలు వంటి చరిత్ర సంఘటనలను చూపుతాయి."]},
+{q:["This is the largest forest cover state in our country","మన దేశంలో అత్యధిక అటవీ విస్తీర్ణం ఉన్న రాష్ట్రం"],o:[["Bihar","బీహార్"],["Madhya Pradesh","మధ్యప్రదేశ్"],["Odisha","ఒడిశా"],["Karnataka","కర్ణాటక"]],a:1,
+e:["Madhya Pradesh has the largest forest cover by area in India, followed by Arunachal Pradesh and Chhattisgarh (India State of Forest Report).","విస్తీర్ణం పరంగా మధ్యప్రదేశ్‌లో అత్యధిక అటవీ ప్రాంతం ఉంది. తర్వాతి స్థానాల్లో అరుణాచల్ ప్రదేశ్, ఛత్తీస్‌గఢ్ ఉన్నాయి (భారత అటవీ నివేదిక)."]},
+{q:["Which of the following is not a slogan for conservation of forests?","కింది వాటిలో అటవీ సంరక్షణ నినాదం కానిది ఏది?"],o:[["Save the trees, save the earth","చెట్లను రక్షించండి – భూమిని రక్షించండి"],["Save nature, save future","ప్రకృతిని రక్షిద్దాం – భవిష్యత్తును కాపాడుదాం"],["Greenery for better environment","మెరుగైన పర్యావరణం కోసం పచ్చదనం"],["Good food, good life","ఆరోగ్యకరమైన ఆహారం – ఆరోగ్యకరమైన జీవితం"]],a:3,
+e:["'Good food, good life' is about health and nutrition, not about forests. The other three speak about trees and nature.","'మంచి ఆహారం – మంచి జీవితం' ఆరోగ్యం, పోషణకు సంబంధించిన నినాదం. మిగతా మూడూ చెట్లు, ప్రకృతి గురించి చెబుతాయి."]},
+{q:["Acacia, Brahmajemudu, Nagajemudu and Thumma trees are found in these forests","తుమ్మ, బ్రహ్మజెముడు, నాగజెముడు వంటి మొక్కలు ఈ అడవుల్లో కనిపిస్తాయి"],o:[["Evergreen forests","సతత హరిత అడవులు"],["Deciduous forests","ఆకురాల్చే అడవులు"],["Thorny forests","ముళ్ళ అడవులు"],["Mangrove forests","మడ అడవులు"]],a:2,
+e:["Thorny forests grow in dry, low-rainfall areas. Plants like acacia (thumma) and cacti (jemudu) have thorns and thick stems to save water.","ముళ్ళ అడవులు తక్కువ వర్షపాతం ఉండే పొడి ప్రాంతాల్లో పెరుగుతాయి. తుమ్మ, జెముడు వంటి మొక్కలకు నీటిని ఆదా చేసేందుకు ముళ్ళు, దళసరి కాండాలు ఉంటాయి."]},
+{q:["These forests are green throughout the year","సంవత్సరం పొడవునా పచ్చగా కనిపించే అడవులు"],o:[["Deciduous forests","ఆకురాల్చే అడవులు"],["Evergreen forests","సతత హరిత అడవులు"],["Tidal forests","తీరప్రాంత అడవులు"],["Mangrove forests","మడ అడవులు"]],a:1,
+e:["Evergreen forests grow where rainfall is very high (over 200 cm). Trees do not shed all their leaves at one time, so they stay green all year.","సతత హరిత అడవులు అధిక వర్షపాతం (200 సెం.మీ. పైగా) ఉండే చోట పెరుగుతాయి. చెట్లు ఒకేసారి ఆకులు రాల్చవు, అందుకే ఏడాదంతా పచ్చగా ఉంటాయి."]},
+{q:["This is not a reason for deforestation","అటవీ నిర్మూలనకు కారణం కానిది"],o:[["Urbanization","పట్టణీకరణ"],["Home furniture","గృహోపకరణాలు (ఫర్నిచర్)"],["Firewood","వంట చెరకు"],["Afforestation","మొక్కలు నాటడం"]],a:3,
+e:["Afforestation means planting trees, which increases forest cover. The others lead to cutting of trees.","మొక్కలు నాటడం (అడవుల పెంపకం) అటవీ విస్తీర్ణాన్ని పెంచుతుంది. మిగతావి చెట్ల నరికివేతకు దారితీస్తాయి."]},
+{q:["The plants of a particular region are called","ఒక ప్రత్యేక ప్రాంతంలో పెరిగే మొక్కలను ఇలా అంటారు"],o:[["Climate","శీతోష్ణస్థితి"],["Fauna","జంతుజాలం"],["Flora","వృక్షజాలం"],["Transpiration","బాష్పోత్సేకం"]],a:2,
+e:["Flora means the plant life of a region; fauna means its animal life.","ఒక ప్రాంతంలోని మొక్కల సమూహం వృక్షజాలం (ఫ్లోరా); జంతువుల సమూహం జంతుజాలం (ఫౌనా)."]},
+{q:["Plateaus are rich in","పీఠభూములు వీటితో సమృద్ధిగా ఉంటాయి"],o:[["Vegetables","కూరగాయలు"],["Fruits","పండ్లు"],["Minerals","ఖనిజాలు"],["Crops","పంటలు"]],a:2,
+e:["Plateaus are storehouses of minerals. The Chota Nagpur plateau, for example, is rich in iron, coal and manganese.","పీఠభూములు ఖనిజాల నిల్వలు. ఉదాహరణకు ఛోటా నాగ్‌పూర్ పీఠభూమిలో ఇనుము, బొగ్గు, మాంగనీస్ సమృద్ధిగా ఉన్నాయి."]},
+{q:["Ananthagiri hills are located in this district","అనంతగిరి కొండలు ఈ జిల్లాలో ఉన్నాయి"],o:[["Palnadu","పల్నాడు"],["Ananthapuram","అనంతపురం"],["Visakhapatnam","విశాఖపట్నం"],["Guntur","గుంటూరు"]],a:2,
+e:["The Ananthagiri hills are part of the Eastern Ghats near Araku, in the old Visakhapatnam district (now in Alluri Sitharama Raju district after the 2022 reorganisation).","అనంతగిరి కొండలు అరకు సమీపంలో తూర్పు కనుమలలో భాగం. ఇవి పాత విశాఖపట్నం జిల్లాలో ఉండేవి (2022 పునర్వ్యవస్థీకరణ తర్వాత అల్లూరి సీతారామరాజు జిల్లాలో)."]},
+{q:["The Integrated Tribal Development Agency (ITDA) headquarters was set up in 1989 at","సమీకృత గిరిజన అభివృద్ధి సంస్థ (ITDA) ప్రధాన కార్యాలయాన్ని 1989లో ఇక్కడ ఏర్పాటు చేశారు"],o:[["Lambasingi","లంబసింగి"],["Araku Valley","అరకు లోయ"],["Ooty","ఊటీ"],["Srisailam","శ్రీశైలం"]],a:3,
+e:["As per the answer key, the ITDA headquarters is at Srisailam. ITDA Srisailam works for the development of the Chenchu tribes of the Nallamala forests.","జవాబు కీ ప్రకారం ITDA ప్రధాన కార్యాలయం శ్రీశైలంలో ఉంది. ఇది నల్లమల అడవుల్లోని చెంచు గిరిజనుల అభివృద్ధికి పనిచేస్తుంది."]},
+{q:["This is the highest plateau in the world","ప్రపంచంలో ఎత్తైన పీఠభూమి"],o:[["Malwa Plateau","మాల్వా పీఠభూమి"],["Colorado Plateau","కొలరాడో పీఠభూమి"],["Tibet Plateau","టిబెట్ పీఠభూమి"],["Deccan Plateau","దక్కన్ పీఠభూమి"]],a:2,
+e:["The Tibetan Plateau has an average height of about 4,500 m and is called the 'Roof of the World'.","టిబెట్ పీఠభూమి సగటు ఎత్తు సుమారు 4,500 మీ. దీనిని 'ప్రపంచపు పైకప్పు' అంటారు."]},
+{q:["Black soils are fertile and good for this cultivation","నల్లరేగడి నేలలు సారవంతమైనవి, ఈ పంటకు అనుకూలం"],o:[["Cotton","పత్తి"],["Millets","చిరుధాన్యాలు"],["Vegetables","కూరగాయలు"],["Wheat","గోధుమ"]],a:0,
+e:["Black soil (regur) holds moisture well, which suits cotton. That is why it is also called black cotton soil.","నల్లరేగడి నేల తేమను బాగా నిలుపుకుంటుంది, ఇది పత్తికి అనుకూలం. అందుకే దీనిని నల్ల పత్తి నేల అని కూడా అంటారు."]},
+{q:["Identify the mismatched pair","సరికాని జతను గుర్తించండి"],o:[["Vamsadhara – Srikakulam","వంశధార – శ్రీకాకుళం"],["Penna – Nellore","పెన్నా – నెల్లూరు"],["Kolleru – West Godavari","కొల్లేరు – పశ్చిమ గోదావరి"],["Pulicat – Krishna","పులికాట్ – కృష్ణా"]],a:3,
+e:["Pulicat lake lies on the Andhra Pradesh–Tamil Nadu border, in the old Nellore district (now Tirupati district), not in Krishna district.","పులికాట్ సరస్సు ఆంధ్రప్రదేశ్–తమిళనాడు సరిహద్దులో, పాత నెల్లూరు జిల్లాలో (ప్రస్తుతం తిరుపతి జిల్లా) ఉంది; కృష్ణా జిల్లాలో కాదు."]},
+{q:["In this country the Earth Summit was held in 1992","1992లో ధరిత్రీ శిఖరాగ్ర సమావేశం జరిగిన దేశం"],o:[["Brazil","బ్రెజిల్"],["Belgium","బెల్జియం"],["U.S.A.","అమెరికా"],["Australia","ఆస్ట్రేలియా"]],a:0,
+e:["The Earth Summit was held at Rio de Janeiro, Brazil, in June 1992. It adopted Agenda 21 for sustainable development.","ధరిత్రీ సదస్సు 1992 జూన్‌లో బ్రెజిల్‌లోని రియో డి జనీరోలో జరిగింది. సుస్థిర అభివృద్ధి కోసం 'అజెండా 21'ను ఆమోదించింది."]},
+{q:["Which one of the following is a human made resource?","కింది వాటిలో మానవ నిర్మిత వనరు ఏది?"],o:[["Spring water","ఊట నీరు"],["Medicine to treat cancer","క్యాన్సర్ చికిత్సకు మందు"],["Tropical forests","ఉష్ణమండల అడవులు"],["Natural gas","సహజ వాయువు"]],a:1,
+e:["A medicine is made by people using knowledge and technology, so it is a human made resource. The others occur in nature.","మందును మానవులు జ్ఞానం, సాంకేతికతతో తయారుచేస్తారు; కనుక ఇది మానవ నిర్మిత వనరు. మిగతావి ప్రకృతిలో సహజంగా లభిస్తాయి."]},
+{q:["The percentage of plateau region in our country is","మన దేశ విస్తీర్ణంలో పీఠభూముల శాతం"],o:[["27%","27%"],["47%","47%"],["59%","59%"],["39%","39%"]],a:0,
+e:["India's land: plains about 43%, mountains about 30% and plateaus about 27%.","భారత భూభాగంలో మైదానాలు సుమారు 43%, పర్వతాలు సుమారు 30%, పీఠభూములు సుమారు 27%."]},
+{q:["Air and water come under this type of resource","గాలి, నీరు ఈ రకం వనరుల కిందకు వస్తాయి"],o:[["Human resource","మానవ వనరు"],["Natural resource","సహజ వనరు"],["Non-renewable resource","పునరుద్ధరించలేని వనరు"],["Human made resource","మానవ నిర్మిత వనరు"]],a:1,
+e:["Air and water are given by nature without human effort, so they are natural resources.","గాలి, నీరు మానవ ప్రయత్నం లేకుండా ప్రకృతి నుండి లభిస్తాయి; కనుక ఇవి సహజ వనరులు."]},
+{q:["It is the amount of resources available for use","ఉపయోగించుకోవడానికి అందుబాటులో ఉన్న మొత్తం వనరులు"],o:[["Resource development","వనరుల అభివృద్ధి"],["Resource conservation","వనరుల పరిరక్షణ"],["Sustainable development","సుస్థిర అభివృద్ధి"],["Stock of resource","వనరుల నిల్వ"]],a:3,
+e:["The stock of a resource is the total amount available for use.","ఉపయోగానికి అందుబాటులో ఉన్న మొత్తం వనరుల పరిమాణాన్ని వనరుల నిల్వ అంటారు."]},
+{q:["Technology is also a ______ resource","సాంకేతికత కూడా ఒక ______ వనరు"],o:[["Natural resource","సహజ వనరు"],["Human made resource","మానవ నిర్మిత వనరు"],["Human resource","మానవ వనరు"],["Non-renewable resource","పునరుద్ధరించలేని వనరు"]],a:1,
+e:["Technology is created by people using their knowledge, so it is a human made resource.","సాంకేతికతను మానవులు తమ జ్ఞానంతో సృష్టిస్తారు; కనుక అది మానవ నిర్మిత వనరు."]},
+{q:["In which of the following states are black soils predominantly found?","నల్లరేగడి నేలలు ఎక్కువగా ఉన్న రాష్ట్రం ఏది?"],o:[["Uttar Pradesh","ఉత్తరప్రదేశ్"],["Rajasthan","రాజస్థాన్"],["Maharashtra","మహారాష్ట్ర"],["Jharkhand","జార్ఖండ్"]],a:2,
+e:["Black soils formed from the basalt rocks of the Deccan Trap, which cover large parts of Maharashtra.","నల్లరేగడి నేలలు దక్కన్ ట్రాప్ బసాల్ట్ శిలల నుండి ఏర్పడ్డాయి. ఇవి మహారాష్ట్రలో విస్తారంగా ఉన్నాయి."]},
+{q:["This factor determines the thickness of soil","నేల మందాన్ని నిర్ణయించే మృత్తిక కారకం"],o:[["Climate","శీతోష్ణస్థితి"],["Parent rock","మాతృశిల"],["Relief","భూస్వరూపం"],["Time","కాలం"]],a:3,
+e:["Soil forms very slowly. The longer the time, the thicker and more mature the soil becomes.","నేల చాలా నెమ్మదిగా ఏర్పడుతుంది. ఎక్కువ కాలం గడిచేకొద్దీ నేల మందంగా, పరిపక్వంగా మారుతుంది."]},
+{q:["The Kaziranga National Park is located in this state","కజిరంగా జాతీయ పార్కు ఈ రాష్ట్రంలో ఉంది"],o:[["Assam","అస్సాం"],["Bihar","బీహార్"],["Gujarat","గుజరాత్"],["West Bengal","పశ్చిమ బెంగాల్"]],a:0,
+e:["Kaziranga in Assam is famous for the one-horned rhinoceros and is a UNESCO World Heritage Site.","అస్సాంలోని కజిరంగా ఒంటికొమ్ము ఖడ్గమృగానికి ప్రసిద్ధి. ఇది యునెస్కో ప్రపంచ వారసత్వ ప్రదేశం."]},
+{q:["Rocks piled up to slow down the flow of water from the hills is called","కొండల నుండి వచ్చే నీటి ప్రవాహ వేగాన్ని తగ్గించడానికి రాళ్ళను పేర్చడాన్ని ఇలా అంటారు"],o:[["Mulching","మల్చింగ్"],["Rock dam","రాతి ఆనకట్ట (రాక్ డ్యామ్)"],["Shelter belts","రక్షక పట్టీలు (షెల్టర్ బెల్ట్స్)"],["Contour ploughing","కాంటూర్ దున్నకం"]],a:1,
+e:["Rock dams slow down running water, which reduces soil erosion and stops gullies from forming.","రాతి ఆనకట్టలు పారే నీటి వేగాన్ని తగ్గించి, నేల కోత, గల్లీలు ఏర్పడటాన్ని అరికడతాయి."]},
+{q:["This is not a common method to conserve land resources","భూవనరుల సంరక్షణ పద్ధతి కానిది"],o:[["Afforestation","అడవుల పెంపకం"],["Overgrazing","పశువులు అతిగా మేయడం"],["Regulated use of chemical pesticides","రసాయన పురుగుమందుల నియంత్రిత వాడకం"],["Land reclamation","భూమి పునరుద్ధరణ"]],a:1,
+e:["Overgrazing removes the grass cover and causes land degradation. The other three help conserve land.","పశువులు అతిగా మేయడం వల్ల గడ్డి పొర పోయి భూమి క్షీణిస్తుంది. మిగతా మూడూ భూమిని సంరక్షిస్తాయి."]},
+{q:["Three-fourths of the Earth's surface is covered with","భూ ఉపరితలంలో మూడొంతులు దీనితో కప్పబడి ఉంది"],o:[["Minerals","ఖనిజాలు"],["Soil","నేల"],["Water","నీరు"],["Rocks","శిలలు"]],a:2,
+e:["About 71% of the Earth's surface is covered by water, which is why Earth is called the 'Blue Planet'.","భూ ఉపరితలంలో సుమారు 71% నీటితో కప్పబడి ఉంది. అందుకే భూమిని 'నీలి గ్రహం' అంటారు."]},
+{q:["The strait separating Sri Lanka from India","శ్రీలంకను భారతదేశం నుండి వేరుచేసే జలసంధి"],o:[["Panama Canal","పనామా కాలువ"],["Palk Strait","పాక్ జలసంధి"],["English Channel","ఇంగ్లిష్ చానెల్"],["Strait of Gibraltar","జిబ్రాల్టర్ జలసంధి"]],a:1,
+e:["The Palk Strait and the Gulf of Mannar separate India from Sri Lanka.","పాక్ జలసంధి, మన్నార్ సింధుశాఖ భారతదేశాన్ని శ్రీలంక నుండి వేరుచేస్తాయి."]},
+{q:["Uttarakhand, Uttar Pradesh, Bihar, West Bengal and Sikkim share a common frontier with this country","ఉత్తరాఖండ్, ఉత్తరప్రదేశ్, బీహార్, పశ్చిమ బెంగాల్, సిక్కిం రాష్ట్రాలు ఉమ్మడి సరిహద్దు కలిగి ఉన్న దేశం"],o:[["China","చైనా"],["Bhutan","భూటాన్"],["Nepal","నేపాల్"],["Myanmar","మయన్మార్"]],a:2,
+e:["These five Indian states border Nepal.","ఈ ఐదు భారత రాష్ట్రాలు నేపాల్‌తో సరిహద్దు కలిగి ఉన్నాయి."]}
+];
+const BASE=0;
+
+const UI={
+ en:{q:"Question",of:"of",score:"Score",prev:"◀ Previous",next:"Next ▶",finish:"See result",right:"Correct!",wrong:"Wrong. Correct answer:",map:"Question map",lr:"Correct",lw:"Wrong",lu:"Not answered",done:"Quiz complete",again:"Start again",att:"Answered"},
+ te:{q:"ప్రశ్న",of:"/",score:"స్కోరు",prev:"◀ వెనుకకు",next:"తర్వాత ▶",finish:"ఫలితం చూడండి",right:"సరైన సమాధానం!",wrong:"తప్పు. సరైన సమాధానం:",map:"ప్రశ్నల పటం",lr:"సరైనవి",lw:"తప్పులు",lu:"జవాబు ఇవ్వనివి",done:"క్విజ్ పూర్తయింది",again:"మళ్ళీ ప్రారంభించండి",att:"జవాబిచ్చినవి"}
+};
+let lang="both",cur=0,ans=Array(Q.length).fill(null),showResult=false;
+try{const s=JSON.parse(localStorage.getItem("tet2a-soc1")||"null");if(s){lang=s.lang||lang;cur=s.cur||0;if(Array.isArray(s.ans)&&s.ans.length===Q.length)ans=s.ans;}}catch(e){}
+const save=()=>{try{localStorage.setItem("tet2a-soc1",JSON.stringify({lang,cur,ans}))}catch(e){}};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function bi(p){ // p=[en,te]
+  if(lang==="en")return `<span class="en">${esc(p[0])}</span>`;
+  if(lang==="te")return `<span class="te">${esc(p[1])}</span>`;
+  return p[0]===p[1]?`<span class="en">${esc(p[0])}</span>`:`<span class="en">${esc(p[0])}</span><span class="te">${esc(p[1])}</span>`;
+}
+function lbl(k){ if(lang==="en")return UI.en[k]; if(lang==="te")return UI.te[k]; return UI.te[k]+" / "+UI.en[k]; }
+const K=["A","B","C","D"];
+function render(){
+  document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===lang));
+  const done=ans.filter(x=>x!==null).length, right=ans.filter((x,i)=>x===Q[i].a).length;
+  document.getElementById("s-pos").innerHTML=`${lbl("att")}: <b>${done}/${Q.length}</b>`;
+  document.getElementById("s-score").innerHTML=`${lbl("score")}: <b>${right}</b>`;
+  document.getElementById("s-bar").style.width=(done/Q.length*100)+"%";
+  const card=document.getElementById("card");
+  if(showResult){
+    const wrong=done-right;
+    card.className="card result";
+    card.innerHTML=`<div class="qno">${lbl("done")}</div><div class="big">${right} / ${Q.length}</div>
+      <div>${lbl("lr")}: <b>${right}</b> · ${lbl("lw")}: <b>${wrong}</b> · ${lbl("lu")}: <b>${Q.length-done}</b></div>
+      <div class="nav" style="justify-content:center"><button id="again">${lbl("again")}</button></div>`;
+    document.getElementById("again").onclick=()=>{ans=Array(Q.length).fill(null);cur=0;showResult=false;save();render();};
+  } else {
+    card.className="card";
+    const q=Q[cur],picked=ans[cur];
+    let h=`<div class="qno">${lbl("q")} ${BASE+cur+1} / ${BASE+Q.length}</div><div class="qtext">${bi(q.q)}</div>`;
+    if(q.m){
+      const mh=q.mh||[["Colour","రంగు"],["Feature","స్వరూపం"]];const hd=k=>lang==="en"?mh[k][0]:lang==="te"?mh[k][1]:mh[k][0]+" / "+mh[k][1];
+      const cell=p=>lang==="en"?esc(p[0]):lang==="te"?`<span style="font-family:var(--f-te)">${esc(p[1])}</span>`:`${esc(p[0])}<small>${esc(p[1])}</small>`;
+      h+=`<div class="mtab"><table><thead><tr><th>${hd(0)}</th><th>${hd(1)}</th></tr></thead><tbody>`+
+         q.m.map(r=>`<tr><td>${cell(r[0])}</td><td>${cell(r[1])}</td></tr>`).join("")+`</tbody></table></div>`;
+    }
+    h+=`<div class="opts">`+q.o.map((o,i)=>{
+      let c="";if(picked!==null){if(i===q.a)c="right";else if(i===picked)c="wrong";}
+      return `<button class="opt ${c}" id="opt${i}" data-i="${i}" ${picked!==null?"disabled":""}><span class="k">${K[i]}</span><span class="t">${bi(o)}</span></button>`;
+    }).join("")+`</div>`;
+    if(picked!==null){
+      const ok=picked===q.a;
+      const v=ok?`<span class="verdict ok">✔ ${lbl("right")}</span>`:`<span class="verdict no">✘ ${lbl("wrong")} ${K[q.a]}</span>`;
+      h+=`<div class="exp">${v}${bi(q.e)}</div>`;
+    }
+    const last=cur===Q.length-1;
+    h+=`<div class="nav"><button class="ghost" id="prev" ${cur===0?"disabled":""}>${lbl("prev")}</button><button id="next">${last?lbl("finish"):lbl("next")}</button></div>`;
+    card.innerHTML=h;
+    card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ans[cur]=+b.dataset.i;save();render();});
+    document.getElementById("prev").onclick=()=>{cur--;save();render();};
+    document.getElementById("next").onclick=()=>{if(last){showResult=true;}else cur++;save();render();window.scrollTo({top:0,behavior:"smooth"});};
+  }
+  document.getElementById("map-h").textContent=lbl("map");
+  document.getElementById("legend").innerHTML=`<span style="--c:var(--ok)">${lbl("lr")}</span><span style="--c:var(--bad)">${lbl("lw")}</span><span style="--c:var(--line)">${lbl("lu")}</span>`;
+  const g=document.getElementById("grid");
+  g.innerHTML=Q.map((q,i)=>{let c=ans[i]===null?"":ans[i]===q.a?"r":"w";if(i===cur&&!showResult)c+=" cur";return `<button class="${c}" data-i="${i}" aria-label="Q ${BASE+i+1}">${BASE+i+1}</button>`}).join("");
+  g.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;showResult=false;save();render();document.getElementById("card").scrollIntoView({behavior:"smooth",block:"start"});});
+}
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>{lang=b.dataset.l;save();render();});
+render();
+</script>
+
+</body>
+</html>
